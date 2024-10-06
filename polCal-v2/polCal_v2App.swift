@@ -4,14 +4,29 @@
 //
 //  Created by Lukas on 06/10/2024.
 //
-
 import SwiftUI
+import FirebaseAuth
+import Firebase
+import SwiftData
 
 @main
 struct polCal_v2App: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
+    // register app delegate for Firebase setup
+       @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+       
+       var body: some Scene {
+           WindowGroup {
+                   RootView()
+           }
+           .modelContainer(for: ScenarioModel.self)
+       }
+   }
+
+   class AppDelegate: NSObject, UIApplicationDelegate {
+       func application(_ application: UIApplication,
+                        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+           FirebaseApp.configure()
+           
+           return true
+       }
+   }
