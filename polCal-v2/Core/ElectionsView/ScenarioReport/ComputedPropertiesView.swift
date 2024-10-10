@@ -5,8 +5,16 @@ struct ComputedPropertiesView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Turnout of qualified parties: \(scenarioModel.gotInTurnout, specifier: "%.2f")% \nQualified votes already distributed: \(scenarioModel.turnoutDistributed, specifier: "%.2f")%\nQualified votes left to be distributed: \(scenarioModel.turnoutLeftToBeDistributed, specifier: "%.2f")%\nRepublic Vote Number: \(scenarioModel.republikoveCislo)\nVoters of qualified parties: \(scenarioModel.populusGotIn)\nVoters with uncast & incorrect votes: \(scenarioModel.populusInvalidNotTurnedIn)\nVoters who attended: \(scenarioModel.populusAttended)")
-                .font(.caption)
+            Text("""
+            Turnout of qualified parties: \(String(format: "%.2f", scenarioModel.gotInTurnout))% 
+            Qualified votes already distributed: \(String(format: "%.2f", scenarioModel.turnoutDistributed))%
+            Qualified votes left to be distributed: \(String(format: "%.2f", scenarioModel.turnoutLeftToBeDistributed))%
+            Republic Vote Number: \(scenarioModel.republikoveCislo)
+            Voters of qualified parties: \(scenarioModel.populusGotIn)
+            Voters with uncast & incorrect votes: \(scenarioModel.populusInvalidNotTurnedIn)
+            Voters who attended: \(scenarioModel.populusAttended)
+            """)
+            .font(.caption)
         }
     }
 }

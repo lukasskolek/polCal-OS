@@ -1,12 +1,3 @@
-//
-//  Saver.swift
-//  polCal
-//
-//  Created by Lukas on 22/09/2024.
-//
-import Foundation
-import SwiftUI
-import SwiftData
 import Foundation
 import SwiftUI
 import SwiftData
@@ -48,10 +39,10 @@ func saveScenario(_ scenarioModel: ScenarioModel) {
     if let index = scenarios.firstIndex(where: { $0.id == newScenario.id }) {
         // Scenario with the same id exists
         do {
-            let existingData = try JSONEncoder().encode(scenarios[index])
-            let newData = try JSONEncoder().encode(newScenario)
+            let existingScenario = scenarios[index]
             
-            if existingData != newData {
+            // Compare the existing scenario with the new one
+            if existingScenario != newScenario {
                 // Scenarios are not equal, replace it
                 scenarios[index] = newScenario
                 
@@ -97,8 +88,8 @@ func scenarioModelToScenario(_ model: ScenarioModel) -> Scenario {
             zostatok: party.zostatok,
             inGovernment: party.inGovernment,
             red: party.red,
-            blue: party.blue,
             green: party.green,
+            blue: party.blue,
             opacity: party.opacity
         )
     }
@@ -107,13 +98,7 @@ func scenarioModelToScenario(_ model: ScenarioModel) -> Scenario {
         id: model.id,
         turnoutTotal: model.turnoutTotal,
         turnoutIncorrect: model.turnoutIncorrect,
-        turnoutDistributed: model.turnoutDistributed,
-        turnoutLeftToBeDistributed: model.turnoutLeftToBeDistributed,
         populus: model.populus,
-        republikoveCislo: model.republikoveCislo,
-        populusGotIn: model.populusGotIn,
-        populusInvalidNotTurnedIn: model.populusInvalidNotTurnedIn,
-        populusAttended: model.populusAttended,
         parties: parties
     )
     

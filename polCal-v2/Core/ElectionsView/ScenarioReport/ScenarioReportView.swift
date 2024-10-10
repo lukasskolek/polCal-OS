@@ -73,7 +73,18 @@ struct ScenarioReportView: View {
                                 let newPartyName = "New Party \(newPartyNumber)"
 
                                 // Action to add a new party with the generated name
-                                let newParty = Party(name: newPartyName, votes: 0.0, coalitionStatus: .alone, mandaty: 0, zostatok: 0, inGovernment: false, red: 0, blue: 1, green: 0.478, opacity: 1.0)
+                                let newParty = PartyModel(
+                                    name: newPartyName,
+                                    votes: 0.0,
+                                    coalitionStatus: .alone,
+                                    mandaty: 0,
+                                    zostatok: 0,
+                                    inGovernment: false,
+                                    red: 0,
+                                    blue: 1,
+                                    green: 0.478,
+                                    opacity: 1.0
+                                )
                                 scenarioModel.parties?.append(newParty)
                                 scenarioModel.calculateMandates() // Recalculate mandates after adding a new party
                             }) {
@@ -242,51 +253,5 @@ struct ScenarioReportView: View {
         } catch {
             print("Failed to delete scenario from savedVolby.json: \(error)")
         }
-    }
-}
-
-#Preview {
-    do {
-        // Create an in-memory model container for previewing
-        let container = try ModelContainer(for: ScenarioModel.self)
-
-        // Access the main context
-        let context = container.mainContext
-
-        // Create sample parties
-        let sampleParties = [
-            Party(name: "Party A", votes: 50000, coalitionStatus: .alone, mandaty: 10, zostatok: 0, inGovernment: false, red: 1.0, blue: 0.0, green: 0.0, opacity: 1.0),
-            Party(name: "Party B", votes: 45000, coalitionStatus: .alone, mandaty: 8, zostatok: 0, inGovernment: false, red: 0.0, blue: 0.0, green: 1.0, opacity: 1.0)
-        ]
-
-        // Create a sample scenario model
-        let sampleScenario = ScenarioModel(
-            id: "Preview Scenario",
-            turnoutTotal: 100000,
-            turnoutIncorrect: 5000,
-            turnoutDistributed: 95000,
-            turnoutLeftToBeDistributed: 0,
-            populus: 4388872,
-            republikoveCislo: 0,
-            populusGotIn: 0,
-            populusInvalidNotTurnedIn: 0,
-            populusAttended: 0,
-            parties: sampleParties
-        )
-
-        // Insert the sample scenario into the context
-        context.insert(sampleScenario)
-
-        // Return the ScenarioReportView with the model container
-        return NavigationStack {
-            ScenarioReportView(
-                path: .constant(NavigationPath()),
-                scenarioModel: sampleScenario
-            )
-            .modelContainer(container)
-        }
-    } catch {
-        // Handle any errors in creating the preview
-        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

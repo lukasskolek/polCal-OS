@@ -84,7 +84,9 @@ struct ElectionsView: View {
             if let scenarios = loadScenarios() {
                 for scenario in scenarios {
                     if !existingIDs.contains(scenario.id) {
-                        modelContext.insert(scenario)
+                        // Convert Scenario to ScenarioModel
+                        let scenarioModel = scenarioToScenarioModel(scenario)
+                        modelContext.insert(scenarioModel)
                     }
                 }
             }
@@ -92,6 +94,7 @@ struct ElectionsView: View {
             print("Failed to fetch existing scenarios: \(error.localizedDescription)")
         }
     }
+
     func loadUserScenariosList() {
         if let scenarios = loadUserScenarios() {
             userScenarios = scenarios
@@ -100,7 +103,7 @@ struct ElectionsView: View {
         }
     }
 
-    // New function to load user scenarios
+    // Function to load user scenarios
     func loadUserScenarioModel(_ scenario: Scenario) {
         do {
             // Check if scenario with the same id already exists in the model context
@@ -123,9 +126,9 @@ struct ElectionsView: View {
 
     // Helper function to convert Scenario to ScenarioModel
     func scenarioToScenarioModel(_ scenario: Scenario) -> ScenarioModel {
-        // Map the parties from Scenario to Party instances
+        // Map the parties from Scenario to PartyModel instances
         let parties = scenario.parties?.map { party in
-            Party(
+            PartyModel(
                 name: party.name,
                 votes: party.votes,
                 coalitionStatus: party.coalitionStatus,
@@ -143,13 +146,7 @@ struct ElectionsView: View {
             id: scenario.id,
             turnoutTotal: scenario.turnoutTotal,
             turnoutIncorrect: scenario.turnoutIncorrect,
-            turnoutDistributed: scenario.turnoutDistributed,
-            turnoutLeftToBeDistributed: scenario.turnoutLeftToBeDistributed,
             populus: scenario.populus,
-            republikoveCislo: scenario.republikoveCislo,
-            populusGotIn: scenario.populusGotIn,
-            populusInvalidNotTurnedIn: scenario.populusInvalidNotTurnedIn,
-            populusAttended: scenario.populusAttended,
             parties: parties
         )
         
@@ -158,6 +155,7 @@ struct ElectionsView: View {
         
         return scenarioModel
     }
+
     func addScenario() {
         do {
             // Fetch all existing scenarios
@@ -182,16 +180,32 @@ struct ElectionsView: View {
                 id: newID,
                 turnoutTotal: 0.0,
                 turnoutIncorrect: 0.0,
-                turnoutDistributed: 0.0,
-                turnoutLeftToBeDistributed: 0.0,
                 populus: 4388872,
-                republikoveCislo: 0,
-                populusGotIn: 0,
-                populusInvalidNotTurnedIn: 0,
-                populusAttended: 0,
                 parties: [
-                    Party(name: "SNS", votes: 0.0, coalitionStatus: .alone, mandaty: 0, zostatok: 0, inGovernment: false, red: 0.567, blue: 0.024, green: 0.592, opacity: 1.0),
-                    Party(name: "PS", votes: 0.0, coalitionStatus: .alone, mandaty: 0, zostatok: 0, inGovernment: false, red: 0.0, blue: 1.0, green: 0.737, opacity: 1.0)
+                    PartyModel(
+                        name: "SNS",
+                        votes: 0.0,
+                        coalitionStatus: .alone,
+                        mandaty: 0,
+                        zostatok: 0,
+                        inGovernment: false,
+                        red: 0.567,
+                        blue: 0.024,
+                        green: 0.592,
+                        opacity: 1.0
+                    ),
+                    PartyModel(
+                        name: "PS",
+                        votes: 0.0,
+                        coalitionStatus: .alone,
+                        mandaty: 0,
+                        zostatok: 0,
+                        inGovernment: false,
+                        red: 0.0,
+                        blue: 1.0,
+                        green: 0.737,
+                        opacity: 1.0
+                    )
                 ]
             )
 
