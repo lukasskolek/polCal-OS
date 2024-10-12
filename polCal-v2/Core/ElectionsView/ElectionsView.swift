@@ -183,7 +183,7 @@ struct ElectionsView: View {
                 populus: 4388872,
                 parties: [
                     PartyModel(
-                        name: "SNS",
+                        name: "Party A",
                         votes: 0.0,
                         coalitionStatus: .alone,
                         mandaty: 0,
@@ -195,7 +195,7 @@ struct ElectionsView: View {
                         opacity: 1.0
                     ),
                     PartyModel(
-                        name: "PS",
+                        name: "Party B",
                         votes: 0.0,
                         coalitionStatus: .alone,
                         mandaty: 0,

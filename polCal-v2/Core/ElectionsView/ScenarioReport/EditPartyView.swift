@@ -23,9 +23,23 @@ struct EditPartyView: View {
     }
     
     static let customColors: [NamedColor] = [
-        NamedColor(name: "Blue", color: .blue, red: 0.0, green: 0.0, blue: 1.0, opacity: 1.0),
-        NamedColor(name: "Red", color: .red, red: 1.0, green: 0.0, blue: 0.0, opacity: 1.0)
-        // ... (other colors)
+        NamedColor(name: "Red", color: Color(red: 1.0, green: 0.0, blue: 0.0), red: 1.0, green: 0.0, blue: 0.0, opacity: 1.0),
+        NamedColor(name: "Green", color: Color(red: 0.0, green: 0.5, blue: 0.0), red: 0.0, green: 0.5, blue: 0.0, opacity: 1.0),
+        NamedColor(name: "Blue", color: Color(red: 0.0, green: 0.0, blue: 1.0), red: 0.0, green: 0.0, blue: 1.0, opacity: 1.0),
+        NamedColor(name: "Orange", color: Color(red: 1.0, green: 0.65, blue: 0.0), red: 1.0, green: 0.65, blue: 0.0, opacity: 1.0),
+        NamedColor(name: "Purple", color: Color(red: 0.5, green: 0.0, blue: 0.5), red: 0.5, green: 0.0, blue: 0.5, opacity: 1.0),
+        NamedColor(name: "Brown", color: Color(red: 0.6, green: 0.4, blue: 0.2), red: 0.6, green: 0.4, blue: 0.2, opacity: 1.0),
+        NamedColor(name: "Teal", color: Color(red: 0.0, green: 0.5, blue: 0.5), red: 0.0, green: 0.5, blue: 0.5, opacity: 1.0),
+        NamedColor(name: "Navy", color: Color(red: 0.0, green: 0.0, blue: 0.5), red: 0.0, green: 0.0, blue: 0.5, opacity: 1.0),
+        NamedColor(name: "Maroon", color: Color(red: 0.5, green: 0.0, blue: 0.0), red: 0.5, green: 0.0, blue: 0.0, opacity: 1.0),
+        NamedColor(name: "Olive", color: Color(red: 0.5, green: 0.5, blue: 0.0), red: 0.5, green: 0.5, blue: 0.0, opacity: 1.0),
+        NamedColor(name: "Turquoise", color: Color(red: 0.25, green: 0.88, blue: 0.82), red: 0.25, green: 0.88, blue: 0.82, opacity: 1.0),
+        NamedColor(name: "Magenta", color: Color(red: 1.0, green: 0.0, blue: 1.0), red: 1.0, green: 0.0, blue: 1.0, opacity: 1.0),
+        NamedColor(name: "Gold", color: Color(red: 0.83, green: 0.68, blue: 0.21), red: 0.83, green: 0.68, blue: 0.21, opacity: 1.0),
+        NamedColor(name: "Coral", color: Color(red: 1.0, green: 0.5, blue: 0.31), red: 1.0, green: 0.5, blue: 0.31, opacity: 1.0),
+        NamedColor(name: "Indigo", color: Color(red: 0.29, green: 0.0, blue: 0.51), red: 0.29, green: 0.0, blue: 0.51, opacity: 1.0),
+        NamedColor(name: "Dark Cyan", color: Color(red: 0.0, green: 0.55, blue: 0.55), red: 0.0, green: 0.55, blue: 0.55, opacity: 1.0),
+        NamedColor(name: "Dark Magenta", color: Color(red: 0.55, green: 0.0, blue: 0.55), red: 0.55, green: 0.0, blue: 0.55, opacity: 1.0)
     ]
     
     init(party: Binding<PartyModel>, scenarioModel: ScenarioModel) {
@@ -73,7 +87,7 @@ struct EditPartyView: View {
                             .tag(index)
                         }
                     }
-                    .onChange(of: selectedColorIndex) { _ in
+                    .onChange(of: selectedColorIndex) {
                         let selectedColor = EditPartyView.customColors[selectedColorIndex]
                         party.red = selectedColor.red
                         party.green = selectedColor.green
@@ -112,7 +126,7 @@ struct EditPartyView: View {
                         
                         Slider(value: $party.votes, in: 0...sliderMax, step: 0.01)
                             .tint(party.color)
-                            .onChange(of: party.votes) { _ in
+                            .onChange(of: party.votes) {
                                 // Call calculateMandates when votes change
                                 scenarioModel.calculateMandates()
                             }
@@ -122,14 +136,14 @@ struct EditPartyView: View {
                             Stepper(value: $party.votes, in: 0...sliderMax, step: 1) {
                                 Text("Adjust by 1%")
                             }
-                            .onChange(of: party.votes) { _ in
+                            .onChange(of: party.votes) {
                                 scenarioModel.calculateMandates()
                             }
                             
                             Stepper(value: $party.votes, in: 0...sliderMax, step: 0.01) {
                                 Text("Adjust by 0.01%")
                             }
-                            .onChange(of: party.votes) { _ in
+                            .onChange(of: party.votes) {
                                 scenarioModel.calculateMandates()
                             }
                         }
@@ -144,7 +158,7 @@ struct EditPartyView: View {
                             Text(status.rawValue).tag(status)
                         }
                     }
-                    .onChange(of: party.coalitionStatus) { _ in
+                    .onChange(of: party.coalitionStatus) {
                         scenarioModel.calculateMandates()
                     }
                     .pickerStyle(SegmentedPickerStyle())

@@ -31,7 +31,7 @@ struct ParliamentView: View {
         .onAppear {
             initializeDots()
         }
-        .onChange(of: scenarioModel.parties) { _ in
+        .onChange(of: scenarioModel.parties) {
             initializeDots()
         }
     }

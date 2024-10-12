@@ -36,7 +36,7 @@ enum CoalitionStatus: String, CaseIterable, Identifiable, Codable {
 // MARK: - PartyModel Class
 
 @Model
-class PartyModel: Identifiable {
+final class PartyModel: Identifiable {
     var id: UUID
     var name: String
     var votes: Double
@@ -86,7 +86,7 @@ class PartyModel: Identifiable {
 // MARK: - ScenarioModel Class
 
 @Model
-class ScenarioModel: Identifiable {
+final class ScenarioModel: Identifiable {
     var id: String
     var turnoutTotal: Double
     var turnoutIncorrect: Double
@@ -155,7 +155,7 @@ extension ScenarioModel {
     }
 
     func calculateMandates() {
-        guard var parties = parties else {
+        guard let parties = parties else {
             print("No parties available")
             return
         }

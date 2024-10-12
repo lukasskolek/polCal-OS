@@ -13,7 +13,9 @@ struct ScenarioReportView: View {
     @State private var isComputedPropertiesSectionVisible: Bool = false
     @State private var isSaved: Bool = false
     @State private var showingDeleteConfirmation = false
-    @State private var showingSaveConfirmation = false // New state variable for save confirmation
+    @State private var showingSaveConfirmation = false // State variable for save confirmation
+    @State private var showErrorAlert = false          // State variable for error alert
+    @State private var errorMessage = ""               // State variable for error message
 
     var hasResults: Bool {
         scenarioModel.parties?.contains(where: { $0.mandaty > 0 }) == true
@@ -78,7 +80,7 @@ struct ScenarioReportView: View {
                                     votes: 0.0,
                                     coalitionStatus: .alone,
                                     mandaty: 0,
-                                    zostatok: 0,
+                                    zostatok: 0.0,
                                     inGovernment: false,
                                     red: 0,
                                     blue: 1,
@@ -173,9 +175,7 @@ struct ScenarioReportView: View {
             }
             .toolbar {
                 Button(action: {
-                    saveScenario(scenarioModel)
-                    isSaved = true // Update isSaved status
-                    showingSaveConfirmation = true // Show confirmation alert
+                    saveButtonTapped()
                 }) {
                     Label("Save", systemImage: "square.and.arrow.down")
                         .foregroundColor(.blue)
@@ -201,6 +201,25 @@ struct ScenarioReportView: View {
             } message: {
                 Text("The scenario has been saved successfully. You will now find it in the archive.")
             }
+            .alert("Error", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
+            }
+        }
+    }
+
+    // MARK: - Functions
+
+    func saveButtonTapped() {
+        do {
+            try saveScenario(scenarioModel)
+            isSaved = true // Update isSaved status
+            showingSaveConfirmation = true // Show confirmation alert
+        } catch {
+            // Handle the error and inform the user
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 

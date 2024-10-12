@@ -92,9 +92,9 @@ struct ScenarioModelView: View {
             // Create the new scenario with default values and the generated ID
             let scenario = ScenarioModel(
                 id: newID,
-                turnoutTotal: 0.0,
-                turnoutIncorrect: 0.0,
-                populus: 4388872,
+                turnoutTotal: 70.0,
+                turnoutIncorrect: 1.0,
+                populus: 4_388_872,
                 parties: [
                     PartyModel(
                         name: "Party 1",

@@ -4,7 +4,7 @@ import Charts
 struct MandateDonutChartView: View {
     @Bindable var scenarioModel: ScenarioModel  // Bindable ScenarioModel for dynamic updates
     @State private var selectedCount: Int?
-    @State private var selectedParty: PartyModel?  // Updated to PartyModel
+    @State private var selectedParty: PartyModel?
 
     var totalGovernmentMandates: Int {
         return scenarioModel.parties?.filter { $0.inGovernment }.reduce(0) { $0 + $1.mandaty } ?? 0
@@ -12,33 +12,37 @@ struct MandateDonutChartView: View {
 
     var body: some View {
         let parties = scenarioModel.parties?.sorted(by: { $0.mandaty > $1.mandaty }) ?? []
+        let partiesWithMandates = parties.filter { $0.mandaty > 0 }
+
         VStack {
-            HStack {
-                Image(systemName: "crown.fill")
-                    .foregroundStyle(totalGovernmentMandates > 75 ? .yellow : .gray)
-                Text("Total coalition mandates: \(totalGovernmentMandates)")
-                    .font(.callout)
-                    .fontWeight(.semibold)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal)
-
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    // Background Bar
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(height: 15)
-                        .foregroundColor(Color.gray.opacity(0.3))
-
-                    // Filled Bar
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: geometry.size.width * CGFloat(totalGovernmentMandates) / 150.0, height: 15)
+            if partiesWithMandates.count >= 2 {
+                HStack {
+                    Image(systemName: "crown.fill")
                         .foregroundStyle(totalGovernmentMandates > 75 ? .yellow : .gray)
-                        .animation(.easeInOut(duration: 0.5), value: totalGovernmentMandates)
+                    Text("Total coalition mandates: \(totalGovernmentMandates)")
+                        .font(.callout)
+                        .fontWeight(.semibold)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
+
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        // Background Bar
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 15)
+                            .foregroundColor(Color.gray.opacity(0.3))
+
+                        // Filled Bar
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: geometry.size.width * CGFloat(totalGovernmentMandates) / 150.0, height: 15)
+                            .foregroundStyle(totalGovernmentMandates > 75 ? .yellow : .gray)
+                            .animation(.easeInOut(duration: 0.5), value: totalGovernmentMandates)
+                    }
+                    .padding(.horizontal)
+                }
+                .frame(maxWidth: .infinity, maxHeight: 20, alignment: .center)
             }
-            .frame(height: 20)
 
             Chart {
                 // Iterate over parties to create sectors
@@ -128,76 +132,5 @@ struct MandateDonutChartView: View {
                 break
             }
         }
-    }
-}
-
-struct MandateDonutChartView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Mock PartyModel data with more parties
-        let mockParties = [
-            PartyModel(
-                name: "OLANO a priatelia",
-                votes: 20.0,
-                coalitionStatus: .alone,
-                mandaty: 70,
-                zostatok: 0,
-                inGovernment: true,
-                red: 0.567,
-                blue: 0.024,
-                green: 0.592,
-                opacity: 1.0
-            ),
-            PartyModel(
-                name: "Party D",
-                votes: 35.0,
-                coalitionStatus: .smallCoal,
-                mandaty: 5,
-                zostatok: 0,
-                inGovernment: false,
-                red: 0.567,
-                blue: 0.24,
-                green: 0.920,
-                opacity: 1.0
-            ),
-            PartyModel(
-                name: "Party B",
-                votes: 35.0,
-                coalitionStatus: .smallCoal,
-                mandaty: 50,
-                zostatok: 0,
-                inGovernment: false,
-                red: 0.567,
-                blue: 0.24,
-                green: 0.920,
-                opacity: 1.0
-            ),
-            PartyModel(
-                name: "Party C",
-                votes: 15.0,
-                coalitionStatus: .bigCoal,
-                mandaty: 25,
-                zostatok: 0,
-                inGovernment: true,
-                red: 0.17,
-                blue: 0.024,
-                green: 0.11,
-                opacity: 1.0
-            )
-        ]
-
-        let mockScenarioModel = ScenarioModel(
-            id: "Scenario 1",
-            turnoutTotal: 70.0,
-            turnoutIncorrect: 1.2,
-            populus: 4_388_872,
-            parties: mockParties
-        )
-
-        // Calculate mandates if necessary
-        mockScenarioModel.calculateMandates()
-
-        return MandateDonutChartView(scenarioModel: mockScenarioModel)
-            .frame(width: 400)
-            .previewDisplayName("Mandates Donut Chart with Multiple Parties")
     }
 }
