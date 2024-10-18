@@ -3,7 +3,7 @@ import SwiftData
 
 struct ElectionsView: View {
     @Environment(\.modelContext) var modelContext
-    @State private var sortOrder: [SortDescriptor<ScenarioModel>] = []
+    @State private var sortOrder: [SortDescriptor<ScenarioModel>] = [SortDescriptor(\ScenarioModel.id)]
     @Binding var selectedTab: Int
     @Binding var path: NavigationPath
     

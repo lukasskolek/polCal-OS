@@ -9,7 +9,8 @@ import SwiftUI
 
 struct PassingABillView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Future feature in development")
+        Image(systemName: "hammer.fill")
     }
 }
 

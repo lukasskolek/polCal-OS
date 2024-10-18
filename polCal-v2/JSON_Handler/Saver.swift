@@ -4,9 +4,20 @@ import SwiftData
 
 func saveScenario(_ scenarioModel: ScenarioModel) throws {
     let fileManager = FileManager.default
+    
+    let defaultScenarioIDs: Set<String> = [
+        "Slovak Parliamentary Election 2023",
+        "Slovak Parliamentary Election 2020",
+        "Slovak Parliamentary Election 2016",
+        "Slovak Parliamentary Election 2012",
+        "Slovak Parliamentary Election 2010",
+        "Slovak Parliamentary Election 2006",
+        "Slovak Parliamentary Election 2002",
+        "Slovak Parliamentary Election 1998"
+    ]
 
     // Check if the scenario's id starts with "New custom scenario"
-    if scenarioModel.id.starts(with: "New custom scenario") {
+    if scenarioModel.id.starts(with: "New custom scenario") || defaultScenarioIDs.contains(scenarioModel.id) {
         // Raise an error and do not save the scenario
         throw NSError(domain: "SaveScenarioErrorDomain", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot save a scenario with the default name. Please rename the scenario before saving."])
     }

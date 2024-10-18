@@ -6,6 +6,15 @@ struct RootView: View {
     @State var selectedTab = 0
     @State private var showSignInView: Bool = false
     @State private var path = NavigationPath()
+    
+    let firstAnnouncements = [
+        NewsAnnouncement(
+            title: "New Feature Released",
+            date: Date(),
+            content: "We're excited to announce the release of our new feature that will revolutionize your experience...",
+            image: Image(systemName: "sparkles")
+        )
+        ]
 
     var body: some View {
             TabView(selection: $selectedTab) {
@@ -23,7 +32,7 @@ struct RootView: View {
                     }
                     .tag(1)
                 
-                FeedView()
+                FeedView(announcements: firstAnnouncements)
                     .tabItem {
                         Image(systemName: "newspaper.circle.fill")
                         Text("News")
