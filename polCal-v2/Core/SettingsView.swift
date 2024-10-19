@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     var body: some View {
         Text("Not much to set up for now, but 🇸🇰 localization is coming!")
+            .padding()
     }
 }
 

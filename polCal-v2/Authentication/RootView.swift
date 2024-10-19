@@ -9,10 +9,10 @@ struct RootView: View {
     
     let firstAnnouncements = [
         NewsAnnouncement(
-            title: "New Feature Released",
-            date: Date(),
-            content: "We're excited to announce the release of our new feature that will revolutionize your experience...",
-            image: Image(systemName: "sparkles")
+            title: "Beta released!",
+            date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 18))!,
+            content: "I'm excited to announce the release of this beta version! Please, play around with it and share it with friends who might be interested in it. Thank you for being a part of this! It's my first time doing this, so I don't really know where this goes, but I am happy to talk and I look forward to your feedback and insights.",
+            image: Image("Beta")
         )
         ]
 

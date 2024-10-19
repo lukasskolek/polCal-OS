@@ -16,7 +16,7 @@ struct polCal_v2App: App {
        
        var body: some Scene {
            WindowGroup {
-                   RootView()
+                  RootView()
            }
            .modelContainer(for: ScenarioModel.self)
        }
