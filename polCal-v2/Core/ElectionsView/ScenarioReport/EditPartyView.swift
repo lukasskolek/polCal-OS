@@ -14,14 +14,15 @@ struct EditPartyView: View {
     @Binding var party: PartyModel  // Direct binding to the party model
     @Bindable var scenarioModel: ScenarioModel
     @Environment(\.dismiss) private var dismiss
-    
+
     @FocusState private var isNameFocused: Bool
     @State private var selectedColorIndex: Int = 0
-    
+    @State private var availableColors: [NamedColor] = []
+
     var totalGovernmentMandates: Int {
         return scenarioModel.parties?.filter { $0.inGovernment }.reduce(0) { $0 + $1.mandaty } ?? 0
     }
-    
+
     static let customColors: [NamedColor] = [
         NamedColor(name: "Red", color: Color(red: 1.0, green: 0.0, blue: 0.0), red: 1.0, green: 0.0, blue: 0.0, opacity: 1.0),
         NamedColor(name: "Green", color: Color(red: 0.0, green: 0.5, blue: 0.0), red: 0.0, green: 0.5, blue: 0.0, opacity: 1.0),
@@ -41,21 +42,49 @@ struct EditPartyView: View {
         NamedColor(name: "Dark Cyan", color: Color(red: 0.0, green: 0.55, blue: 0.55), red: 0.0, green: 0.55, blue: 0.55, opacity: 1.0),
         NamedColor(name: "Dark Magenta", color: Color(red: 0.55, green: 0.0, blue: 0.55), red: 0.55, green: 0.0, blue: 0.55, opacity: 1.0)
     ]
-    
+
     init(party: Binding<PartyModel>, scenarioModel: ScenarioModel) {
         self._party = party
         self.scenarioModel = scenarioModel
-        // Initialize selectedColorIndex
-        let index = EditPartyView.customColors.firstIndex(where: { color in
-            // Compare color components with party's color components
-            // Use a small tolerance
-            let tolerance: Double = 0.01
-            return abs(color.red - party.wrappedValue.red) < tolerance &&
-                abs(color.green - party.wrappedValue.green) < tolerance &&
-                abs(color.blue - party.wrappedValue.blue) < tolerance &&
-                abs(color.opacity - party.wrappedValue.opacity) < tolerance
+
+        // Initialize availableColors with customColors
+        var colors = EditPartyView.customColors
+
+        // Use a small tolerance
+        let tolerance: Double = 0.01
+
+        // Check if the party's current color is in availableColors
+        if !colors.contains(where: { color in
+            abs(color.red - party.wrappedValue.red) < tolerance &&
+            abs(color.green - party.wrappedValue.green) < tolerance &&
+            abs(color.blue - party.wrappedValue.blue) < tolerance &&
+            abs(color.opacity - party.wrappedValue.opacity) < tolerance
+        }) {
+            // If not, create a new NamedColor for the current color
+            let currentColor = NamedColor(
+                name: "Current Color",
+                color: party.wrappedValue.color,
+                red: party.wrappedValue.red,
+                green: party.wrappedValue.green,
+                blue: party.wrappedValue.blue,
+                opacity: party.wrappedValue.opacity
+            )
+            // Append to colors
+            colors.insert(currentColor, at:0)
+        }
+
+        // Initialize availableColors state variable
+        self._availableColors = State(initialValue: colors)
+
+        // Find the index of the current color in availableColors
+        let index = colors.firstIndex(where: { color in
+            abs(color.red - party.wrappedValue.red) < tolerance &&
+            abs(color.green - party.wrappedValue.green) < tolerance &&
+            abs(color.blue - party.wrappedValue.blue) < tolerance &&
+            abs(color.opacity - party.wrappedValue.opacity) < tolerance
         }) ?? 0 // Default to 0 if no match
-        _selectedColorIndex = State(initialValue: index)
+
+        self._selectedColorIndex = State(initialValue: index)
     }
     
     var body: some View {
@@ -73,28 +102,28 @@ struct EditPartyView: View {
             
             Group {
                 Section(header: HStack {
-                    Text("Party Color").font(.caption2)
-                    Circle()
-                        .fill(party.color)
-                        .frame(width: 20, height: 20)
-                }) {
-                    Picker("Select Color", selection: $selectedColorIndex) {
-                        ForEach(0..<EditPartyView.customColors.count, id: \.self) { index in
-                            HStack {
-                                Text(EditPartyView.customColors[index].name)
-                                    .foregroundStyle(EditPartyView.customColors[index].color)
-                            }
-                            .tag(index)
-                        }
-                    }
-                    .onChange(of: selectedColorIndex) {
-                        let selectedColor = EditPartyView.customColors[selectedColorIndex]
-                        party.red = selectedColor.red
-                        party.green = selectedColor.green
-                        party.blue = selectedColor.blue
-                        party.opacity = selectedColor.opacity
-                    }
-                }
+                                    Text("Party Color").font(.caption2)
+                                    Circle()
+                                        .fill(party.color)
+                                        .frame(width: 20, height: 20)
+                                }) {
+                                    Picker("Change party color", selection: $selectedColorIndex) {
+                                        ForEach(0..<availableColors.count, id: \.self) { index in
+                                            HStack {
+                                                Text(availableColors[index].name)
+                                                    .foregroundStyle(availableColors[index].color)
+                                            }
+                                            .tag(index)
+                                        }
+                                    }
+                                    .onChange(of: selectedColorIndex) {
+                                        let selectedColor = availableColors[selectedColorIndex]
+                                        party.red = selectedColor.red
+                                        party.green = selectedColor.green
+                                        party.blue = selectedColor.blue
+                                        party.opacity = selectedColor.opacity
+                                    }
+                                }
                 
                 Section(header: Text("Percentage of the vote").font(.caption2)) {
                     // Compute the maximum votes the party can have

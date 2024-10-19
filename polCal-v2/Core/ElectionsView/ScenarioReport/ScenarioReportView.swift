@@ -91,11 +91,12 @@ struct ScenarioReportView: View {
                                 scenarioModel.calculateMandates() // Recalculate mandates after adding a new party
                             }) {
                                 Label("Add Party", systemImage: "plus")
-                                    .buttonStyle(NeatButtonStyle())
+                                    .foregroundColor(
+                                        (scenarioModel.turnoutLeftToBeDistributed < 0.01 || isNameFocused) ? .gray : .blue
+                                    )
                             }
+                            .disabled(scenarioModel.turnoutLeftToBeDistributed < 0.01 || isNameFocused)
                         }
-                        .disabled(scenarioModel.turnoutLeftToBeDistributed < 0.01)
-                        .disabled(isNameFocused)
 
                         // Safely unwrap optional Binding and show the list of parties
                         PartiesInScenarioReportView(scenarioModel: scenarioModel)

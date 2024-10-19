@@ -54,17 +54,43 @@ struct ScenarioModelView: View {
         }
     }
     
-    func loadScenarioModels() {
+    func loadScenarioModels(for year: Int) {
         do {
             let existingScenarios = try modelContext.fetch(ScenarioModel.fetchRequest())
             let existingIDs = Set(existingScenarios.map { $0.id })
             
-            if let scenarios = loadScenarios() {
+            var scenarios: [Scenario]? = nil
+            
+            switch year {
+            case 1998:
+                scenarios = loadScenarios1998()
+            case 2002:
+                scenarios = loadScenarios2002()
+            case 2006:
+                scenarios = loadScenarios2006()
+            case 2010:
+                scenarios = loadScenarios2010()
+            case 2012:
+                scenarios = loadScenarios2012()
+            case 2016:
+                scenarios = loadScenarios2016()
+            case 2020:
+                scenarios = loadScenarios2020()
+            case 2023:
+                scenarios = loadScenarios2023()
+            default:
+                scenarios = nil
+                print("No scenarios available for the year \(year).")
+            }
+            
+            if let scenarios = scenarios {
                 for scenario in scenarios {
                     if !existingIDs.contains(scenario.id) {
                         // Convert Scenario to ScenarioModel
                         let scenarioModel = scenarioToScenarioModel(scenario)
                         modelContext.insert(scenarioModel)
+                    } else {
+                        print("Scenario with id \(scenario.id) already exists in the model context.")
                     }
                 }
             }

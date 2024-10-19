@@ -1,0 +1,133 @@
+[
+    {
+        "id": "Slovak Parliamentary Election 1998",
+        "turnoutTotal": 84.24,
+        "turnoutIncorrect": 0.72,
+        "turnoutDistributed": 83.52,
+        "turnoutLeftToBeDistributed": 0.0,
+        "populus": 4023191,
+        "republikoveCislo": 20960,
+        "populusGotIn": 3164912,
+        "populusInvalidNotTurnedIn": 30170,
+        "populusAttended": 3389346,
+        "parties": [
+            {
+                "name": "HZDS",
+                "votes": 27.00,
+                "coalitionStatus": "Alone",
+                "gotIn": true,
+                "mandaty": 43,
+                "zostatok": 5823,
+                "inGovernment": false,
+                "red": 1.0,
+                "green": 0.0,
+                "blue": 0.0,
+                "opacity": 1.0
+            },
+            {
+                "name": "SDK",
+                "votes": 26.33,
+                "coalitionStatus": "Alone",
+                "gotIn": true,
+                "mandaty": 42,
+                "zostatok": 4177,
+                "inGovernment": true,
+                "red": 0.25,
+                "green": 0.88,
+                "blue": 0.82,
+                "opacity": 1.0
+            },
+            {
+                "name": "SDĽ",
+                "votes": 14.66,
+                "coalitionStatus": "Alone",
+                "gotIn": true,
+                "mandaty": 23,
+                "zostatok": 10427,
+                "inGovernment": true,
+                "red": 1.0,
+                "green": 0.0,
+                "blue": 1.0,
+                "opacity": 1.0
+            },
+            {
+                "name": "SMK - MKP",
+                "votes": 9.12,
+                "coalitionStatus": "Alone",
+                "gotIn": true,
+                "mandaty": 15,
+                "zostatok": 13183,
+                "inGovernment": true,
+                "red": 0.0,
+                "green": 0.0,
+                "blue": 1.0,
+                "opacity": 1.0
+            },
+            {
+                "name": "SNS",
+                "votes": 9.07,
+                "coalitionStatus": "Alone",
+                "gotIn": true,
+                "mandaty": 14,
+                "zostatok": 11399,
+                "inGovernment": false,
+                "red": 0.5,
+                "green": 0.0,
+                "blue": 0.0,
+                "opacity": 1.0
+            },
+            {
+                "name": "SOP",
+                "votes": 8.01,
+                "coalitionStatus": "Alone",
+                "gotIn": true,
+                "mandaty": 13,
+                "zostatok": 17823,
+                "inGovernment": true,
+                "red": 0.0,
+                "green": 1.0,
+                "blue": 0.0,
+                "opacity": 1.0
+            },
+            {
+                "name": "KSS",
+                "votes": 2.79,
+                "coalitionStatus": "Alone",
+                "gotIn": false,
+                "mandaty": 0,
+                "zostatok":  10525,
+                "inGovernment": false,
+                "red": 0.0,
+                "green": 0.0,
+                "blue": 0.5,
+                "opacity": 1.0
+            },
+            {
+                "name": "ZRS",
+                "votes": 1.30,
+                "coalitionStatus": "Alone",
+                "gotIn": false,
+                "mandaty": 0,
+                "zostatok": 0,
+                "inGovernment": false,
+                "red": 0.75,
+                "green": 1.0,
+                "blue": 0.0,
+                "opacity": 1.0
+            },
+            {
+                "name": "Naše Slovensko",
+                "votes": 0.48,
+                "coalitionStatus": "Alone",
+                "gotIn": false,
+                "mandaty": 0,
+                "zostatok": 0,
+                "inGovernment": false,
+                "red": 1.0,
+                "green": 0.86,
+                "blue": 0.35,
+                "opacity": 1.0
+            }
+        ]
+    }
+]
