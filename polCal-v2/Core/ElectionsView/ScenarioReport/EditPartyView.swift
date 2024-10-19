@@ -101,7 +101,7 @@ struct EditPartyView: View {
                     let totalAllocatedVotesExcludingCurrentParty = (scenarioModel.parties?.filter { $0 !== party }.reduce(0.0) { $0 + $1.votes } ?? 0.0)
                     
                     // Ensure sliderMax is at least a small positive value, like 0.01
-                    let availableVotes = scenarioModel.turnoutTotal - totalAllocatedVotesExcludingCurrentParty
+                    let availableVotes = 100 - totalAllocatedVotesExcludingCurrentParty
                     let sliderMax = max(0.01, availableVotes)
                     
                     // Compute populusAttended
