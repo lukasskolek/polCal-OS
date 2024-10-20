@@ -1,30 +1,38 @@
-//
-//  Saver.swift
-//  polCal
-//
-//  Created by Lukas on 22/09/2024.
-//
-import Foundation
-import SwiftUI
-import SwiftData
 import Foundation
 import SwiftUI
 import SwiftData
 
-func saveScenario(_ scenarioModel: ScenarioModel) {
+func saveScenario(_ scenarioModel: ScenarioModel) throws {
     let fileManager = FileManager.default
     
+    let defaultScenarioIDs: Set<String> = [
+        "Slovak Parliamentary Election 2023",
+        "Slovak Parliamentary Election 2020",
+        "Slovak Parliamentary Election 2016",
+        "Slovak Parliamentary Election 2012",
+        "Slovak Parliamentary Election 2010",
+        "Slovak Parliamentary Election 2006",
+        "Slovak Parliamentary Election 2002",
+        "Slovak Parliamentary Election 1998"
+    ]
+
+    // Check if the scenario's id starts with "New custom scenario"
+    if scenarioModel.id.starts(with: "New custom scenario") || defaultScenarioIDs.contains(scenarioModel.id) {
+        // Raise an error and do not save the scenario
+        throw NSError(domain: "SaveScenarioErrorDomain", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot save a scenario with the default name. Please rename the scenario before saving."])
+    }
+
     // Get the URL for the Documents directory
     guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
         print("Could not access the documents directory.")
         return
     }
-    
+
     // Create the URL for savedVolby.json in the Documents directory
     let savedVolbyURL = documentsURL.appendingPathComponent("savedVolby.json")
-    
+
     var scenarios = [Scenario]()
-    
+
     // Check if savedVolby.json exists
     if fileManager.fileExists(atPath: savedVolbyURL.path) {
         do {
@@ -41,23 +49,23 @@ func saveScenario(_ scenarioModel: ScenarioModel) {
         // If the file doesn't exist, start with an empty array
         scenarios = []
     }
-    
+
     // Convert the ScenarioModel to Scenario
     let newScenario = scenarioModelToScenario(scenarioModel)
-    
+
     if let index = scenarios.firstIndex(where: { $0.id == newScenario.id }) {
         // Scenario with the same id exists
         do {
-            let existingData = try JSONEncoder().encode(scenarios[index])
-            let newData = try JSONEncoder().encode(newScenario)
-            
-            if existingData != newData {
+            let existingScenario = scenarios[index]
+
+            // Compare the existing scenario with the new one
+            if existingScenario != newScenario {
                 // Scenarios are not equal, replace it
                 scenarios[index] = newScenario
-                
+
                 // Encode the updated array
                 let data = try JSONEncoder().encode(scenarios)
-                
+
                 // Write data to savedVolby.json
                 try data.write(to: savedVolbyURL)
                 print("Scenario with id \(newScenario.id) updated in savedVolby.json.")
@@ -71,11 +79,11 @@ func saveScenario(_ scenarioModel: ScenarioModel) {
     } else {
         // Scenario does not exist, append it
         scenarios.append(newScenario)
-        
+
         do {
             // Encode the updated array
             let data = try JSONEncoder().encode(scenarios)
-            
+
             // Write data to savedVolby.json
             try data.write(to: savedVolbyURL)
             print("Scenario with id \(newScenario.id) added to savedVolby.json.")
@@ -97,25 +105,19 @@ func scenarioModelToScenario(_ model: ScenarioModel) -> Scenario {
             zostatok: party.zostatok,
             inGovernment: party.inGovernment,
             red: party.red,
-            blue: party.blue,
             green: party.green,
+            blue: party.blue,
             opacity: party.opacity
         )
     }
-    
+
     let scenario = Scenario(
         id: model.id,
         turnoutTotal: model.turnoutTotal,
         turnoutIncorrect: model.turnoutIncorrect,
-        turnoutDistributed: model.turnoutDistributed,
-        turnoutLeftToBeDistributed: model.turnoutLeftToBeDistributed,
         populus: model.populus,
-        republikoveCislo: model.republikoveCislo,
-        populusGotIn: model.populusGotIn,
-        populusInvalidNotTurnedIn: model.populusInvalidNotTurnedIn,
-        populusAttended: model.populusAttended,
         parties: parties
     )
-    
+
     return scenario
 }

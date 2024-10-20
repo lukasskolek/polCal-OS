@@ -13,7 +13,9 @@ struct ScenarioReportView: View {
     @State private var isComputedPropertiesSectionVisible: Bool = false
     @State private var isSaved: Bool = false
     @State private var showingDeleteConfirmation = false
-    @State private var showingSaveConfirmation = false // New state variable for save confirmation
+    @State private var showingSaveConfirmation = false // State variable for save confirmation
+    @State private var showErrorAlert = false          // State variable for error alert
+    @State private var errorMessage = ""               // State variable for error message
 
     var hasResults: Bool {
         scenarioModel.parties?.contains(where: { $0.mandaty > 0 }) == true
@@ -73,16 +75,28 @@ struct ScenarioReportView: View {
                                 let newPartyName = "New Party \(newPartyNumber)"
 
                                 // Action to add a new party with the generated name
-                                let newParty = Party(name: newPartyName, votes: 0.0, coalitionStatus: .alone, mandaty: 0, zostatok: 0, inGovernment: false, red: 0, blue: 1, green: 0.478, opacity: 1.0)
+                                let newParty = PartyModel(
+                                    name: newPartyName,
+                                    votes: 0.0,
+                                    coalitionStatus: .alone,
+                                    mandaty: 0,
+                                    zostatok: 0.0,
+                                    inGovernment: false,
+                                    red: 0,
+                                    blue: 1,
+                                    green: 0.478,
+                                    opacity: 1.0
+                                )
                                 scenarioModel.parties?.append(newParty)
                                 scenarioModel.calculateMandates() // Recalculate mandates after adding a new party
                             }) {
                                 Label("Add Party", systemImage: "plus")
-                                    .buttonStyle(NeatButtonStyle())
+                                    .foregroundColor(
+                                        (scenarioModel.turnoutLeftToBeDistributed < 0.01 || isNameFocused) ? .gray : .blue
+                                    )
                             }
+                            .disabled(scenarioModel.turnoutLeftToBeDistributed < 0.01 || isNameFocused)
                         }
-                        .disabled(scenarioModel.turnoutLeftToBeDistributed < 0.01)
-                        .disabled(isNameFocused)
 
                         // Safely unwrap optional Binding and show the list of parties
                         PartiesInScenarioReportView(scenarioModel: scenarioModel)
@@ -162,9 +176,7 @@ struct ScenarioReportView: View {
             }
             .toolbar {
                 Button(action: {
-                    saveScenario(scenarioModel)
-                    isSaved = true // Update isSaved status
-                    showingSaveConfirmation = true // Show confirmation alert
+                    saveButtonTapped()
                 }) {
                     Label("Save", systemImage: "square.and.arrow.down")
                         .foregroundColor(.blue)
@@ -190,6 +202,25 @@ struct ScenarioReportView: View {
             } message: {
                 Text("The scenario has been saved successfully. You will now find it in the archive.")
             }
+            .alert("Error", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
+            }
+        }
+    }
+
+    // MARK: - Functions
+
+    func saveButtonTapped() {
+        do {
+            try saveScenario(scenarioModel)
+            isSaved = true // Update isSaved status
+            showingSaveConfirmation = true // Show confirmation alert
+        } catch {
+            // Handle the error and inform the user
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 
@@ -242,51 +273,5 @@ struct ScenarioReportView: View {
         } catch {
             print("Failed to delete scenario from savedVolby.json: \(error)")
         }
-    }
-}
-
-#Preview {
-    do {
-        // Create an in-memory model container for previewing
-        let container = try ModelContainer(for: ScenarioModel.self)
-
-        // Access the main context
-        let context = container.mainContext
-
-        // Create sample parties
-        let sampleParties = [
-            Party(name: "Party A", votes: 50000, coalitionStatus: .alone, mandaty: 10, zostatok: 0, inGovernment: false, red: 1.0, blue: 0.0, green: 0.0, opacity: 1.0),
-            Party(name: "Party B", votes: 45000, coalitionStatus: .alone, mandaty: 8, zostatok: 0, inGovernment: false, red: 0.0, blue: 0.0, green: 1.0, opacity: 1.0)
-        ]
-
-        // Create a sample scenario model
-        let sampleScenario = ScenarioModel(
-            id: "Preview Scenario",
-            turnoutTotal: 100000,
-            turnoutIncorrect: 5000,
-            turnoutDistributed: 95000,
-            turnoutLeftToBeDistributed: 0,
-            populus: 4388872,
-            republikoveCislo: 0,
-            populusGotIn: 0,
-            populusInvalidNotTurnedIn: 0,
-            populusAttended: 0,
-            parties: sampleParties
-        )
-
-        // Insert the sample scenario into the context
-        context.insert(sampleScenario)
-
-        // Return the ScenarioReportView with the model container
-        return NavigationStack {
-            ScenarioReportView(
-                path: .constant(NavigationPath()),
-                scenarioModel: sampleScenario
-            )
-            .modelContainer(container)
-        }
-    } catch {
-        // Handle any errors in creating the preview
-        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

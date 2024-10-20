@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Not much to set up for now, but 🇸🇰 localization is coming!")
+            .padding()
     }
 }
 
