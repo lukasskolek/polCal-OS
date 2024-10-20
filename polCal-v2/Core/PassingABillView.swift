@@ -15,7 +15,11 @@ struct PassingABillView: View {
                 .fontWeight(.semibold)
             Text("You will be able to simulate whether or not a legislative vote passes in a custom parliamentary setting.\n\nBesides custom scenarios, the available source of real-time data on legislative voting is easy to retrieve from nrsr.sk, so this app could one day better visualise real voting as well. Currently, the available format is practical but not user-friendly:\n \nPrítomní:  121\nHlasujúcich:  121 \n[Z] Za hlasovalo:  17\n[P] Proti hlasovalo:  31\n[?] Zdržalo sa hlasovania:  73\n[N] Nehlasovalo:  0\n[0] Neprítomní:  29\n\n[Z / P / ? / N / 0] Priezvisko, Meno\n\nI think the legislative process can be presented in a way that provides a more digestible explanation along with greater insight.")
         }
-            .padding()
+        .padding()
+        .background(Color(UIColor.secondarySystemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .padding(.horizontal)
     }
 }
 

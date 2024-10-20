@@ -7,12 +7,18 @@ struct RootView: View {
     @State private var showSignInView: Bool = false
     @State private var path = NavigationPath()
     
-    let firstAnnouncements = [
+    let firstAnnouncement = [
         NewsAnnouncement(
             title: "Beta released!",
             date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 18))!,
             content: "I'm excited to announce the release of this beta version! Please, play around with it and share it with friends who might be interested in it. Thank you for being a part of this! It's my first time doing this, so I don't really know where this goes, but I am happy to talk and I look forward to your feedback and insights.",
-            image: Image("Beta")
+            image: nil
+        ),
+        NewsAnnouncement(
+            title: "What's next?",
+            date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 18))!,
+            content: "I'm excited to announce the release of this beta version! Please, play around with it and share it with friends who might be interested in it. Thank you for being a part of this! It's my first time doing this, so I don't really know where this goes, but I am happy to talk and I look forward to your feedback and insights.",
+            image: nil
         )
         ]
 
@@ -32,7 +38,7 @@ struct RootView: View {
                     }
                     .tag(1)
                 
-                FeedView(announcements: firstAnnouncements)
+                FeedView(announcements: firstAnnouncement)
                     .tabItem {
                         Image(systemName: "newspaper.circle.fill")
                         Text("News")
