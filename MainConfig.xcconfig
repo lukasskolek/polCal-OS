@@ -1,0 +1,14 @@
+//
+//  MainConfig.xcconfig
+//  polCal-v2
+//
+//  Created by Lukas on 22/10/2024.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+
+BUILD_NUMBER = 2
+
+APP_VERSION = 1.1

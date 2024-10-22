@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
 
 struct NeatButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
