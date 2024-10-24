@@ -11,7 +11,7 @@ struct RootView: View {
         NewsAnnouncement(
             title: "What's next?",
             date: Calendar.current.date(from: DateComponents(year: 2024, month: 10, day: 24))!,
-            content: "I hope in the future news feed updates will include new opinion polls being released, functionality for additional countries, different types of elections and a lot more. Stay tuned.",
+            content: "I hope in the future news feed updates will include opinion polls just after they have been released, functionality for additional countries, different types of elections and a lot more. It will take some time, but I promise I will try my best with those updates.",
             image: nil
         ),
         NewsAnnouncement(

@@ -153,7 +153,7 @@ final class ScenarioModel: Identifiable {
         }
 
         
-        let electoralQuota = Int(Double(populusGotIn) / 150.0)
+        let electoralQuota = Int(Double(populusGotIn) / 151.0)
         return electoralQuota
     }
 
