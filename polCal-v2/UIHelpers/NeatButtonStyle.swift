@@ -14,7 +14,7 @@ struct NeatButtonStyle: ButtonStyle {
             .font(.system(size: 20, weight: .bold)) // Consistent font size and weight
             .foregroundStyle(
                 LinearGradient(
-                    gradient: Gradient(colors: [.blue, .purple]),
+                    gradient: Gradient(colors: [.customRed, .customBlue]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -28,7 +28,7 @@ struct NeatButtonStyle: ButtonStyle {
                         Capsule()
                             .stroke(
                                 LinearGradient(
-                                    gradient: Gradient(colors: [.blue, .purple]),
+                                    gradient: Gradient(colors: [.customRed, .customBlue]),
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 ),

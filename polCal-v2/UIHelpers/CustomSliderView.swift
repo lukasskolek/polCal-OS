@@ -18,7 +18,7 @@ struct CustomSliderView: View {
                 Text("\(percenta, specifier: "%.2f")%")
                     .font(.system(size: 24, weight: .bold, design: .rounded)) // Custom font with rounded design
                     .foregroundStyle(
-                        LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(gradient: Gradient(colors: [.customRed, .customBlue]), startPoint: .topLeading, endPoint: .bottomTrailing)
                     ) // Gradient color
                     .shadow(color: .gray.opacity(0.3), radius: 4, x: 2, y: 2) // Subtle shadow for depth
                 
@@ -41,7 +41,7 @@ struct CustomSliderView: View {
                 
                 // Slider
                     Slider(value: $percenta, in: range, step: step)
-                        .accentColor(.blue)
+                        .accentColor(.customBlue)
                 // Increment button
 //                Button(action: {
 //                    incrementValue()

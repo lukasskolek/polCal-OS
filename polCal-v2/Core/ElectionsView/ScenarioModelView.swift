@@ -129,9 +129,9 @@ struct ScenarioModelView: View {
                         mandaty: 0,
                         zostatok: 0.0,
                         inGovernment: false,
-                        red: 0.567,
-                        blue: 0.024,
-                        green: 0.592,
+                        red: 0.373,
+                        blue: 0.847,
+                        green: 0.784,
                         opacity: 1.0
                     ),
                     PartyModel(
@@ -141,9 +141,9 @@ struct ScenarioModelView: View {
                         mandaty: 0,
                         zostatok: 0.0,
                         inGovernment: false,
-                        red: 0.0,
-                        blue: 1.0,
-                        green: 0.737,
+                        red: 0.922,
+                        blue: 0.282,
+                        green: 0.329,
                         opacity: 1.0
                     )
                 ]

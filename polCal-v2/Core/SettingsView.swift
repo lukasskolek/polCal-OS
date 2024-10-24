@@ -189,6 +189,7 @@ struct PPSheetView: View {
 
 struct AboutMeSheetView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme  // Detects light or dark mode
 
     var body: some View {
         VStack {
@@ -217,7 +218,7 @@ struct AboutMeSheetView: View {
                 .font(.body)
                 .padding(.horizontal)
             HStack{
-                Image("Xwhite")
+                Image(colorScheme == .dark ? "Xwhite" : "Xblack")  // Conditional image for dark/light mode
                     .resizable()
                     .frame(width: 16, height: 16)
                 Text("[@luky_sklk](https://x.com/luky_sklk)")
