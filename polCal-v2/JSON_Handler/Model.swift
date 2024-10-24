@@ -17,7 +17,7 @@ struct Party: Codable, Equatable {
     var votes: Double
     var coalitionStatus: CoalitionStatus
     var mandaty: Int
-    var zostatok: Double
+    var zostatok: Int
     var inGovernment: Bool
     var red: Double
     var green: Double
@@ -42,7 +42,7 @@ final class PartyModel: Identifiable {
     var votes: Double
     var coalitionStatus: CoalitionStatus
     var mandaty: Int
-    var zostatok: Double
+    var zostatok: Int
     var inGovernment: Bool
     var red: Double
     var blue: Double
@@ -68,7 +68,7 @@ final class PartyModel: Identifiable {
         return votes >= threshold
     }
 
-    init(id: UUID = UUID(), name: String, votes: Double, coalitionStatus: CoalitionStatus, mandaty: Int = 0, zostatok: Double = 0.0, inGovernment: Bool, red: Double, blue: Double, green: Double, opacity: Double) {
+    init(id: UUID = UUID(), name: String, votes: Double, coalitionStatus: CoalitionStatus, mandaty: Int = 0, zostatok: Int = 0, inGovernment: Bool, red: Double, blue: Double, green: Double, opacity: Double) {
         self.id = id
         self.name = name
         self.votes = votes
@@ -111,7 +111,27 @@ final class ScenarioModel: Identifiable {
     }
 
     var populusGotIn: Int {
-        return Int((Double(populus) * (turnoutTotal / 100.0)) * (gotInTurnout / 100.0))
+        guard let parties = parties else {
+            return 0
+        }
+        let partiesGotIn = parties.filter { $0.gotIn }
+        if partiesGotIn.isEmpty {
+            return 0
+        }
+
+        // Compute adjusted population (number of valid votes)
+        let turnoutFraction = turnoutTotal / 100.0
+        let validVoteFraction = 1 - (turnoutIncorrect / 100.0)
+        let adjustedPopulation = Double(populus) * turnoutFraction * validVoteFraction
+
+        // Compute total votes for parties that got in
+        let totalVotesGotIn = partiesGotIn.reduce(0.0) { total, party in
+            let partyVoteFraction = party.votes / 100.0
+            let partyVotesAbsolute = adjustedPopulation * partyVoteFraction
+            return total + partyVotesAbsolute
+        }
+
+        return Int(totalVotesGotIn)
     }
 
     var populusInvalidNotTurnedIn: Int {
@@ -123,18 +143,17 @@ final class ScenarioModel: Identifiable {
     }
     
     // Computed property for republikoveCislo (Electoral Quota)
-    var republikoveCislo: Double {
+    var republikoveCislo: Int {
         guard let parties = parties else {
-            return 0.0
+            return 0
         }
         let partiesGotIn = parties.filter { $0.gotIn }
         if partiesGotIn.isEmpty {
-            return 0.0
+            return 0
         }
-        let totalVotesGotIn = partiesGotIn.reduce(0.0) { total, party in
-            total + Double(populus) * (turnoutTotal / 100.0) * (party.votes / 100.0)
-        }
-        let electoralQuota = totalVotesGotIn / 150.0
+
+        
+        let electoralQuota = Int(Double(populusGotIn) / 150.0)
         return electoralQuota
     }
 
@@ -160,10 +179,10 @@ extension ScenarioModel {
             return
         }
 
-        // Reset mandates and residuals
+//         Reset mandates and residuals
         for index in parties.indices {
             parties[index].mandaty = 0
-            parties[index].zostatok = 0.0
+            parties[index].zostatok = 0
         }
 
         if self.turnoutTotal <= 0.0 {
@@ -189,7 +208,7 @@ extension ScenarioModel {
                 } else {
                     parties[index].mandaty = 0
                 }
-                parties[index].zostatok = 0.0
+                parties[index].zostatok = 0
             }
             self.parties = parties
             return
@@ -199,7 +218,7 @@ extension ScenarioModel {
         let electoralQuota = self.republikoveCislo
 
         // Handle edge case when electoralQuota is zero
-        if electoralQuota <= 0.0 {
+        if electoralQuota <= 0 {
             print("Electoral quota is zero")
             self.parties = parties
             return
@@ -209,16 +228,16 @@ extension ScenarioModel {
         var totalMandatesAssigned = 0
         for index in parties.indices {
             if parties[index].gotIn {
-                let partyVotesAbsolute = Double(populus) * (turnoutTotal / 100.0) * (parties[index].votes / 100.0)
-                let exactMandates = partyVotesAbsolute / electoralQuota
+                let partyVotesAbsolute = Double(populus) * ((turnoutTotal / 100.0) * (1-(turnoutIncorrect/100))) * (parties[index].votes / 100.0)
+                let exactMandates = partyVotesAbsolute / Double(electoralQuota)
                 let initialMandates = Int(exactMandates)
-                let residual = exactMandates - Double(initialMandates)
+                let residual = Int(partyVotesAbsolute) % Int(electoralQuota)
                 parties[index].mandaty = initialMandates
                 parties[index].zostatok = residual
                 totalMandatesAssigned += initialMandates
             } else {
                 parties[index].mandaty = 0
-                parties[index].zostatok = 0.0
+                parties[index].zostatok = 0
             }
         }
 

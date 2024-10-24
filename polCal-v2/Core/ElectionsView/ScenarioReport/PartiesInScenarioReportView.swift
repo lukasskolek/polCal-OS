@@ -46,9 +46,16 @@ struct PartiesInScenarioReportView: View {
                             VStack {
                                 HStack {
                                     Text("Vote: \(party.votes, specifier: "%.2f")%")
-                                    let votersForParty = Int((party.votes / 100.0) * Double(scenarioModel.populusAttended))
+                                    var turnoutFraction = scenarioModel.turnoutTotal / 100.0
+                                    var validVoteFraction = 1 - (scenarioModel.turnoutIncorrect / 100.0)
+                                    var adjustedPopulation = Double(scenarioModel.populus) * turnoutFraction * validVoteFraction
+                                    var partyVoteFraction = party.votes / 100.0
+                                    let partyVotesAbsolute = adjustedPopulation * partyVoteFraction
                                     Spacer()
-                                    Text("Voters: \(votersForParty)")
+                                    HStack{
+                                        Text("Voters: \(partyVotesAbsolute)")
+                                        Text("Voters: \(party.zostatok)")
+                                    }
                                         .foregroundColor(.gray)
                                 }
                                 Slider(value: Binding(

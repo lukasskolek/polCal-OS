@@ -30,6 +30,7 @@ struct ScenarioReportView: View {
 
     let incorrectOptions: [(value: Double, label: String)] = [
         (1.4, "1.4%"),
+        (1.31, "1.31%"),
         (1.2, "1.2%"),
         (1.0, "1.0%"),
         (0.8, "0.8%"),
@@ -80,7 +81,7 @@ struct ScenarioReportView: View {
                                     votes: 0.0,
                                     coalitionStatus: .alone,
                                     mandaty: 0,
-                                    zostatok: 0.0,
+                                    zostatok: 0,
                                     inGovernment: false,
                                     red: 0,
                                     blue: 1,
