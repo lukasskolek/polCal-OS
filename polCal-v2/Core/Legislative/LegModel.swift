@@ -9,16 +9,18 @@ import Foundation
 import SwiftData
 
 // Define the voting choices as a Codable enum for persistence
-enum VotingChoice: String, Codable {
+enum VotingChoice: String, Codable, CaseIterable, Identifiable {
     case forVote = "For"
     case against = "Against"
     case didNotVote = "Did Not Vote"
     case refusedToVote = "Refused To Vote"
     case notPresent = "Not Present"
+    
+    var id: String { self.rawValue }
 }
 
 @Model
-class MP {
+class MP: ObservableObject, Identifiable {
     var name: String
     var legParty: legParty?
     var vote: VotingChoice
@@ -27,11 +29,12 @@ class MP {
         self.name = name
         self.legParty = legParty
         self.vote = .notPresent // Default state
+        legParty?.members.append(self)
     }
 }
 
 @Model
-class legParty {
+class legParty: ObservableObject {
     var name: String
     var members: [MP]
 
@@ -46,10 +49,12 @@ class legParty {
 }
 
 @Model
-class Vote {
+final class Vote: Identifiable{
+    var id: String
     var mps: [MP]
 
-    init(mps: [MP]) {
+    init(id: String, mps: [MP]) {
+        self.id = id
         self.mps = mps
     }
 
@@ -76,5 +81,11 @@ class Vote {
 
         // Check if 'For' votes are more than half of present MPs
         return forVotes > totalPresent / 2
+    }
+}
+
+extension Vote {
+    static func fetchRequest(predicate: Predicate<Vote>? = nil) -> FetchDescriptor<Vote> {
+        FetchDescriptor<Vote>(predicate: predicate)
     }
 }

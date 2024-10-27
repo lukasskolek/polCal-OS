@@ -31,7 +31,7 @@ struct RootView: View {
                     }
                     .tag(0)
                 
-                PassingABillView()
+                LegislativeView(selectedTab: $selectedTab, path:$path)
                     .tabItem {
                         Image(systemName: "theatermasks.circle")
                         Text("Voting")

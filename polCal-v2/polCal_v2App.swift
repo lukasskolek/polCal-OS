@@ -18,7 +18,7 @@ struct polCal_v2App: App {
            WindowGroup {
                   RootView()
            }
-           .modelContainer(for: ScenarioModel.self)
+           .modelContainer(for: [ScenarioModel.self, Vote.self])
        }
    }
 

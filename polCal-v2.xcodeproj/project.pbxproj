@@ -52,6 +52,8 @@
 				Core/Legislative/CurrentMPs.swift,
 				Core/Legislative/LegislativeView.swift,
 				Core/Legislative/LegModel.swift,
+				Core/Legislative/LegModelView.swift,
+				Core/Legislative/VoteReportView.swift,
 			);
 			target = 80CF9DB42CB3096C00CCFC0B /* polCal-v2Tests */;
 		};
@@ -61,6 +63,8 @@
 				Core/Legislative/CurrentMPs.swift,
 				Core/Legislative/LegislativeView.swift,
 				Core/Legislative/LegModel.swift,
+				Core/Legislative/LegModelView.swift,
+				Core/Legislative/VoteReportView.swift,
 			);
 			target = 80CF9DBE2CB3096C00CCFC0B /* polCal-v2UITests */;
 		};
