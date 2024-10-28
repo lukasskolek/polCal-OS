@@ -11,6 +11,7 @@ import SwiftData
 struct LegislativeView: View {
     
     @Environment(\.modelContext) var modelContext
+    
     @Binding var selectedTab: Int
     
     @Binding var path: NavigationPath
@@ -59,7 +60,7 @@ struct LegislativeView: View {
         do {
             let existingVotes = try modelContext.fetch(Vote.fetchRequest())
             
-            // Find the highest number used in "New custom scenario X"
+            // Find the highest number used in "New custom vote X"
             let newIDNumber = (existingVotes.compactMap { vote -> Int? in
                 if vote.id.starts(with: "New custom vote ") {
                     let suffix = vote.id.dropFirst("New custom vote ".count)
@@ -69,21 +70,32 @@ struct LegislativeView: View {
             }.max() ?? 0) + 1
             
             // Generate the new scenario ID
-            let newID = "New custom scenario \(newIDNumber)"
+            let newID = "New custom vote \(newIDNumber)"
             
-            // Create the new scenario with default values and the generated ID
+            // Create new instances of MPs for the new vote
+            let newMPs = currentMPs.map { oldMP -> MP in
+                // Create a new MP instance with the same properties
+                let newMP = MP(name: oldMP.name)
+                newMP.legParty = oldMP.legParty
+                // Set other properties if needed
+                return newMP
+            }
+            
+            // Create the new vote with the new MP instances
             let vote = Vote(
                 id: newID,
-                mps: currentMPs
+                mps: newMPs,
+                typevote: TypeVote.standard
             )
             
-            // Insert the new scenario into the model context
+            // Insert the new vote into the model context
             modelContext.insert(vote)
             
         } catch {
-            print("Failed to fetch existing scenarios: \(error.localizedDescription)")
+            print("Failed to fetch existing votes: \(error.localizedDescription)")
         }
     }
+    
     func deleteAllVotes() {
         do {
             let allVotes = try modelContext.fetch(Vote.fetchRequest())

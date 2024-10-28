@@ -8,13 +8,13 @@
 import Foundation
 import SwiftData
 
-let legpartySLOVENSKO = legParty(name: "OĽaNO")
-let legpartySMERSD = legParty(name: "SMER–SD")
-let legpartySNS = legParty(name: "SNS")
-let legpartySAS = legParty(name: "SAS")
-let legpartyKDH = legParty(name: "KDH")
-let legpartyPS = legParty(name: "PS")
-let legpartyHLASSD = legParty(name: "HLAS-SD")
+let legpartySLOVENSKO = legParty(id: 4, name: "OĽaNO")
+let legpartySMERSD = legParty(id: 1, name: "SMER–SD")
+let legpartySNS = legParty(id: 7,name: "SNS")
+let legpartySAS = legParty(id: 5,name: "SAS")
+let legpartyKDH = legParty(id: 6,name: "KDH")
+let legpartyPS = legParty(id: 2, name: "PS")
+let legpartyHLASSD = legParty(id: 3,name: "HLAS–SD")
 
 
 

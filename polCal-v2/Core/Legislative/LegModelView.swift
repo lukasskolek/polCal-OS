@@ -19,6 +19,7 @@ struct LegModelView: View {
                         Text("\(vote.id)")
                 }
             }
+            .onDelete(perform: deleteVote)
         }
         .overlay {
             if votes.isEmpty {
@@ -34,6 +35,7 @@ struct LegModelView: View {
         }
         .onAppear(perform: {})
     }
+    
     func addVote(){
         do {
             let existingVotes = try modelContext.fetch(Vote.fetchRequest())
@@ -48,12 +50,13 @@ struct LegModelView: View {
             }.max() ?? 0) + 1
             
             // Generate the new scenario ID
-            let newID = "New custom scenario \(newIDNumber)"
+            let newID = "New custom vote \(newIDNumber)"
             
             // Create the new scenario with default values and the generated ID
             let vote = Vote(
                 id: newID,
-                mps: currentMPs
+                mps: currentMPs,
+                typevote: TypeVote.standard
             )
             
             // Insert the new scenario into the model context
@@ -61,6 +64,12 @@ struct LegModelView: View {
             
         } catch {
             print("Failed to fetch existing scenarios: \(error.localizedDescription)")
+        }
+    }
+    func deleteVote(at offsets: IndexSet) {
+        for offset in offsets {
+            let vote = votes[offset]
+            modelContext.delete(vote)
         }
     }
     

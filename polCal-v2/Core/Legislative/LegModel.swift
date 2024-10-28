@@ -19,6 +19,27 @@ enum VotingChoice: String, Codable, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
+enum PartyVotingChoice: String, Codable, CaseIterable, Identifiable {
+    
+    case mixed = "Mixed"
+    case forVote = "For"
+    case against = "Against"
+    case didNotVote = "Did Not Vote"
+    case refusedToVote = "Refused To Vote"
+    case notPresent = "Not Present"
+    
+    var id: String { self.rawValue }
+}
+
+enum TypeVote: String, Codable, CaseIterable, Identifiable {
+    
+    case standard = "standard"
+    case veto = "veto"
+    case constitutional = "constitutional"
+    
+    var id: String { self.rawValue }
+}
+
 @Model
 class MP: ObservableObject, Identifiable {
     var name: String
@@ -35,10 +56,12 @@ class MP: ObservableObject, Identifiable {
 
 @Model
 class legParty: ObservableObject {
+    var id: Int
     var name: String
     var members: [MP]
 
-    init(name: String, members: [MP] = []) {
+    init(id:Int, name: String, members: [MP] = []) {
+        self.id = id
         self.name = name
         self.members = members
         // Set the party reference for each member
@@ -52,10 +75,12 @@ class legParty: ObservableObject {
 final class Vote: Identifiable{
     var id: String
     var mps: [MP]
+    var typevote: TypeVote
 
-    init(id: String, mps: [MP]) {
+    init(id: String, mps: [MP], typevote: TypeVote) {
         self.id = id
         self.mps = mps
+        self.typevote = typevote
     }
 
     // Update the voting choice for a specific MP
@@ -79,13 +104,22 @@ final class Vote: Identifiable{
         let totalPresent = presentMPs.count
         let forVotes = presentMPs.filter { $0.vote == .forVote }.count
 
-        // Check if 'For' votes are more than half of present MPs
-        return forVotes > totalPresent / 2
+        if self.typevote == .standard {
+            if totalPresent >= 39 {
+                return forVotes > totalPresent / 2
+            } else {
+                return false
+            }
+        } else if self.typevote == .veto {
+            return forVotes >= 76
+        } else {
+            return forVotes >= 90
+        }
     }
 }
 
 extension Vote {
-    static func fetchRequest(predicate: Predicate<Vote>? = nil) -> FetchDescriptor<Vote> {
-        FetchDescriptor<Vote>(predicate: predicate)
+    static func fetchRequest() -> FetchDescriptor<Vote> {
+        FetchDescriptor<Vote>()
     }
 }
