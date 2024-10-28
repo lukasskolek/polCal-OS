@@ -40,13 +40,31 @@ enum TypeVote: String, Codable, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-@Model
-class MP: ObservableObject, Identifiable {
+struct Vote: Codable, Equatable {
+    var id: String
+    var mps: [MP]
+    var typevote: TypeVote
+}
+
+struct MP: Codable, Equatable {
     var name: String
     var legParty: legParty?
     var vote: VotingChoice
+}
 
-    init(name: String, legParty: legParty? = nil) {
+struct legParty: Codable, Equatable {
+    var id: Int
+    var name: String
+    var members: [MP]
+}
+
+@Model
+class MPModel: ObservableObject, Identifiable {
+    var name: String
+    var legParty: legPartyModel?
+    var vote: VotingChoice
+
+    init(name: String, legParty: legPartyModel? = nil) {
         self.name = name
         self.legParty = legParty
         self.vote = .notPresent // Default state
@@ -55,12 +73,12 @@ class MP: ObservableObject, Identifiable {
 }
 
 @Model
-class legParty: ObservableObject {
+class legPartyModel: ObservableObject {
     var id: Int
     var name: String
-    var members: [MP]
+    var members: [MPModel]
 
-    init(id:Int, name: String, members: [MP] = []) {
+    init(id:Int, name: String, members: [MPModel] = []) {
         self.id = id
         self.name = name
         self.members = members
@@ -72,26 +90,26 @@ class legParty: ObservableObject {
 }
 
 @Model
-final class Vote: Identifiable{
+final class VoteModel: Identifiable{
     var id: String
-    var mps: [MP]
+    var mps: [MPModel]
     var typevote: TypeVote
 
-    init(id: String, mps: [MP], typevote: TypeVote) {
+    init(id: String, mps: [MPModel], typevote: TypeVote) {
         self.id = id
         self.mps = mps
         self.typevote = typevote
     }
 
     // Update the voting choice for a specific MP
-    func setVote(for mp: MP, choice: VotingChoice) {
+    func setVote(for mp: MPModel, choice: VotingChoice) {
         if let index = mps.firstIndex(where: { $0.name == mp.name }) {
             mps[index].vote = choice
         }
     }
 
     // Update the voting choice for all MPs in a party
-    func setVote(for legParty: legParty, choice: VotingChoice) {
+    func setVote(for legParty: legPartyModel, choice: VotingChoice) {
         for mp in mps where mp.legParty?.name == legParty.name {
             mp.vote = choice
         }
@@ -118,8 +136,8 @@ final class Vote: Identifiable{
     }
 }
 
-extension Vote {
-    static func fetchRequest() -> FetchDescriptor<Vote> {
-        FetchDescriptor<Vote>()
+extension VoteModel {
+    static func fetchRequest() -> FetchDescriptor<VoteModel> {
+        FetchDescriptor<VoteModel>()
     }
 }

@@ -51,14 +51,14 @@ struct LegislativeView: View {
                         
                     }
                 }
-                .navigationDestination(for: Vote.self) { vote in
+                .navigationDestination(for: VoteModel.self) { vote in
                     VoteReportView(path: $path, vote: vote)
                 }
         }
     }
     func addVote() {
         do {
-            let existingVotes = try modelContext.fetch(Vote.fetchRequest())
+            let existingVotes = try modelContext.fetch(VoteModel.fetchRequest())
             
             // Find the highest number used in "New custom vote X"
             let newIDNumber = (existingVotes.compactMap { vote -> Int? in
@@ -73,16 +73,16 @@ struct LegislativeView: View {
             let newID = "New custom vote \(newIDNumber)"
             
             // Create new instances of MPs for the new vote
-            let newMPs = currentMPs.map { oldMP -> MP in
+            let newMPs = currentMPs.map { oldMP -> MPModel in
                 // Create a new MP instance with the same properties
-                let newMP = MP(name: oldMP.name)
+                let newMP = MPModel(name: oldMP.name)
                 newMP.legParty = oldMP.legParty
                 // Set other properties if needed
                 return newMP
             }
             
             // Create the new vote with the new MP instances
-            let vote = Vote(
+            let vote = VoteModel(
                 id: newID,
                 mps: newMPs,
                 typevote: TypeVote.standard
@@ -98,7 +98,7 @@ struct LegislativeView: View {
     
     func deleteAllVotes() {
         do {
-            let allVotes = try modelContext.fetch(Vote.fetchRequest())
+            let allVotes = try modelContext.fetch(VoteModel.fetchRequest())
             for vote in allVotes {
                 modelContext.delete(vote)
             }

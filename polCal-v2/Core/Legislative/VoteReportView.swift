@@ -3,7 +3,7 @@ import SwiftUI
 struct VoteReportView: View {
     @Binding var path: NavigationPath
     @Environment(\.modelContext) var modelContext
-    @Bindable var vote: Vote
+    @Bindable var vote: VoteModel
 
     // Focus state for the ID text field
     @FocusState private var isNameFocused: Bool
@@ -69,7 +69,7 @@ struct VoteReportView: View {
                         let parties = Dictionary(grouping: vote.mps) { $0.legParty }
 
                         // Create an array of (legParty: legParty?, id: Int) and sort by id
-                        let sortedParties = parties.keys.map { legParty -> (legParty: legParty?, id: Int) in
+                        let sortedParties = parties.keys.map { legParty -> (legParty: legPartyModel?, id: Int) in
                             if let legParty = legParty {
                                 return (legParty: legParty, id: legParty.id)
                             } else {
@@ -150,16 +150,18 @@ struct VoteReportView: View {
     }
 
     // Function to adjust MPs' votes based on the slider value
-    func adjustMPVotes(mps: [MP], forVotes: Int) {
+    func adjustMPVotes(mps: [MPModel], forVotes: Int) {
         let sortedMPs = mps.sorted(by: { $0.name < $1.name })
         for (index, mp) in sortedMPs.enumerated() {
             mp.vote = index < forVotes ? .forVote : .notPresent
         }
     }
+    
+    
 }
 
 struct MPRowView: View {
-    @ObservedObject var mp: MP
+    @ObservedObject var mp: MPModel
 
     var body: some View {
         HStack {
