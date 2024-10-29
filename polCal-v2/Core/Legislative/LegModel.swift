@@ -55,7 +55,6 @@ struct MP: Codable, Equatable {
 struct legParty: Codable, Equatable {
     var id: Int
     var name: String
-    var members: [MP]
 }
 
 @Model
@@ -92,6 +91,8 @@ class legPartyModel: ObservableObject {
 @Model
 final class VoteModel: Identifiable{
     var id: String
+    
+    @Relationship(deleteRule: .cascade)
     var mps: [MPModel]
     var typevote: TypeVote
 

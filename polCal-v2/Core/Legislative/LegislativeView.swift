@@ -13,8 +13,11 @@ struct LegislativeView: View {
     @Environment(\.modelContext) var modelContext
     
     @Binding var selectedTab: Int
-    
+    @State private var sortOrder: [SortDescriptor<VoteModel>] = [SortDescriptor(\VoteModel.id)]
     @Binding var path: NavigationPath
+    
+    
+    @State private var userVotes: [Vote] = []
     
    // var parliaments = ["2020","2023", "current"]
     @State var selectedParlSetup: String = "current"
@@ -22,23 +25,28 @@ struct LegislativeView: View {
     
     var body: some View {
         NavigationStack {
-            LegModelView()
+            LegModelView(sortOrder: sortOrder)
+                .onAppear {
+                    loadUserVotesList()
+                }
                 .navigationTitle("Browse votes")
                 .toolbar {
                     if selectedTab == 1 {
 
-                        Menu {
-//                            ForEach(userVotes, id: \.id) { vote in
-//                                Button(vote.id) {
-//                                    loadUserVote(vote)
-//                                }
-//                            }
-                            
-                        } label: {
-                            Label("Archive", systemImage: "archivebox")
+                        
+                        if !userVotes.isEmpty {
+                            Menu {
+                                ForEach(userVotes, id: \.id) { vote in
+                                    Button(vote.id) {
+                                        loadUserVoteModel(vote)
+                                    }
+                                }
+                            } label: {
+                                Label("Saved Votes", systemImage: "archivebox")
+                            }
                         }
                         Button(action: addVote) {
-                            Label("Add Scenario", systemImage: "plus")
+                            Label("Add Vote", systemImage: "plus")
                         }
                         // Button to delete all scenarios
                         Button(role: .destructive, action: deleteAllVotes) {
@@ -56,6 +64,27 @@ struct LegislativeView: View {
                 }
         }
     }
+    
+    func loadUserVoteModel(_ vote: Vote) {
+        do {
+            // Check if scenario with the same id already exists in the model context
+            let existingVotes = try modelContext.fetch(VoteModel.fetchRequest())
+            if existingVotes.contains(where: { $0.id == vote.id }) {
+                // Scenario is already in model context
+                print("Scenario with id \(vote.id) already exists in model context.")
+                return
+            } else {
+                // Convert Scenario to ScenarioModel
+                let voteModel = voteToVoteModel(vote)
+                // Insert into modelContext
+                modelContext.insert(voteModel)
+                print("Inserted vote with id \(vote.id) into model context.")
+            }
+        } catch {
+            print("Error loading user vote: \(error)")
+        }
+    }
+    
     func addVote() {
         do {
             let existingVotes = try modelContext.fetch(VoteModel.fetchRequest())
@@ -95,6 +124,77 @@ struct LegislativeView: View {
             print("Failed to fetch existing votes: \(error.localizedDescription)")
         }
     }
+    
+    func loadUserVotesList() {
+        if let votes = loadUserVotes() {
+            userVotes = votes
+        } else {
+            userVotes = []
+        }
+    }
+    
+    func voteToVoteModel(_ vote: Vote) -> VoteModel {
+        // Create a mapping from legParty IDs to legPartyModel instances to avoid duplicates
+        var legPartyModelsById = [Int: legPartyModel]()
+        
+        // Create an array to hold MPModel instances
+        var mpModels = [MPModel]()
+        
+        // Iterate over each MP in the vote
+        for mp in vote.mps {
+            // Initialize legPartyModelInstance as nil
+            var legPartyModelInstance: legPartyModel? = nil
+            
+            // Check if the MP has a legParty
+            if let legParty = mp.legParty {
+                // Check if we've already created a legPartyModel for this party
+                if let existingLegPartyModel = legPartyModelsById[legParty.id] {
+                    // Use the existing legPartyModel
+                    legPartyModelInstance = existingLegPartyModel
+                } else {
+                    // Create a new legPartyModel
+                    let newLegPartyModel = legPartyModel(id: legParty.id, name: legParty.name)
+                    legPartyModelsById[legParty.id] = newLegPartyModel
+                    legPartyModelInstance = newLegPartyModel
+                }
+            }
+            
+            // Create a new MPModel
+            let mpModel = MPModel(name: mp.name, legParty: legPartyModelInstance)
+            mpModel.vote = mp.vote  // Set the MP's vote
+            
+            // Append the MPModel to the array
+            mpModels.append(mpModel)
+        }
+        
+        // Create a new VoteModel with the converted MPs
+        let voteModel = VoteModel(id: vote.id, mps: mpModels, typevote: vote.typevote)
+        
+        return voteModel
+    }
+    
+//    func legPartyModelToLegParty(_ model: legPartyModel) -> legParty {
+//        return legParty(id: model.id, name: model.name)
+//    }
+//
+//    func mpModelToMP(_ mpModel: MPModel) -> MP {
+//        let legParty = mpModel.legParty != nil ? legPartyModelToLegParty(mpModel.legParty!) : nil
+//        return MP(name: mpModel.name, legParty: legParty, vote: mpModel.vote)
+//    }
+//
+//    // Helper function to convert VoteModel to Vote
+//    func voteModelToVote(_ model: VoteModel) -> Vote {
+//        // Map the MPs from VoteModel to MP structs
+//        let mps = model.mps.map { mpModelToMP($0) }
+//
+//        let vote = Vote(
+//            id: model.id,
+//            mps: mps,
+//            typevote: model.typevote
+//        )
+//
+//        return vote
+//    }
     
     func deleteAllVotes() {
         do {

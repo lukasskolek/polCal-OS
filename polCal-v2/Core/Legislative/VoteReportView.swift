@@ -9,6 +9,14 @@ struct VoteReportView: View {
     @FocusState private var isNameFocused: Bool
     // Maintain a dictionary of expanded states for parties using their IDs
     @State private var expandedParties: [Int: Bool] = [:]
+    
+    // State variable to hold the IDs of saved votes
+    @State private var savedVoteIDs: Set<String> = []
+    @State private var showingSaveConfirmation = false
+    @State private var showingDeleteConfirmation = false
+    @State private var isSaved: Bool = false
+    @State private var showErrorAlert = false
+    @State private var errorMessage = ""
 
     var body: some View {
         VStack {
@@ -121,7 +129,82 @@ struct VoteReportView: View {
                         }
                     }
                 }
+                if isSaved {
+                    Section("Storage") {
+                        Button(role: .destructive) {
+                            showingDeleteConfirmation = true
+                        } label: {
+                            Label("Permanently delete", systemImage: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
             }
+            .toolbar {
+                Button(action: {
+                    saveButtonTapped()
+                }) {
+                    Label("Save", systemImage: "square.and.arrow.down")
+                        .foregroundColor(.blue)
+                }
+            }
+            .navigationTitle("Vote Report")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                isSaved = isVoteSaved(vote)
+            }
+            .alert("Delete Vote", isPresented: $showingDeleteConfirmation) {
+                Button("Delete", role: .destructive) {
+                    deleteVote(vote)
+                    isSaved = false // Update isSaved status
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Are you sure you want to permanently delete this vote from your archive?")
+            }
+            .alert("Scenario Saved", isPresented: $showingSaveConfirmation) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("The scenario has been saved successfully. You will now find it in the archive.")
+            }
+            .alert("Error", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
+            }
+        }
+    }
+    
+    func saveButtonTapped() {
+        do {
+            try saveVote(vote)
+            isSaved = true // Update isSaved status
+            showingSaveConfirmation = true // Show confirmation alert
+        } catch {
+            // Handle the error and inform the user
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
+        }
+    }
+    
+    func isVoteSaved(_ voteModel: VoteModel) -> Bool {
+        let fileManager = FileManager.default
+        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Could not access the documents directory.")
+            return false
+        }
+        let savedVotesURL = documentsURL.appendingPathComponent("savedVotes.json")
+        if !fileManager.fileExists(atPath: savedVotesURL.path) {
+            // savedVolby.json does not exist
+            return false
+        }
+        do {
+            let data = try Data(contentsOf: savedVotesURL)
+            let votes = try JSONDecoder().decode([Vote].self, from: data)
+            return votes.contains(where: { $0.id == voteModel.id })
+        } catch {
+            print("Failed to read savedVotes.json: \(error)")
+            return false
         }
     }
 
@@ -156,7 +239,82 @@ struct VoteReportView: View {
             mp.vote = index < forVotes ? .forVote : .notPresent
         }
     }
+    func loadSavedVoteIDs() {
+        let fileManager = FileManager.default
+        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Could not access the documents directory.")
+            return
+        }
+        let savedVotesURL = documentsURL.appendingPathComponent("savedVotes.json")
+        if !fileManager.fileExists(atPath: savedVotesURL.path) {
+            // savedVolby.json does not exist
+            savedVoteIDs = []
+            return
+        }
+        do {
+            let data = try Data(contentsOf: savedVotesURL)
+            let votes = try JSONDecoder().decode([Vote].self, from: data)
+            let ids = votes.map { $0.id }
+            savedVoteIDs = Set(ids)
+        } catch {
+            print("Failed to read savedVolby.json: \(error)")
+            savedVoteIDs = []
+        }
+    }
     
+    
+    
+    func legPartyModelToLegParty(_ model: legPartyModel) -> legParty {
+        return legParty(id: model.id, name: model.name)
+    }
+
+    func mpModelToMP(_ mpModel: MPModel) -> MP {
+        let legParty = mpModel.legParty != nil ? legPartyModelToLegParty(mpModel.legParty!) : nil
+        return MP(name: mpModel.name, legParty: legParty, vote: mpModel.vote)
+    }
+
+    // Helper function to convert VoteModel to Vote
+    func voteModelToVote(_ model: VoteModel) -> Vote {
+        // Map the MPs from VoteModel to MP structs
+        let mps = model.mps.map { mpModelToMP($0) }
+
+        let vote = Vote(
+            id: model.id,
+            mps: mps,
+            typevote: model.typevote
+        )
+
+        return vote
+    }
+    
+    func deleteVote(_ vote: VoteModel) {
+        let fileManager = FileManager.default
+        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Could not access the documents directory.")
+            return
+        }
+        let savedVotesURL = documentsURL.appendingPathComponent("savedVotes.json")
+        if !fileManager.fileExists(atPath: savedVotesURL.path) {
+            // savedVotes.json does not exist
+            return
+        }
+        do {
+            let data = try Data(contentsOf: savedVotesURL)
+            var votes = try JSONDecoder().decode([Vote].self, from: data)
+            if let index = votes.firstIndex(where: { $0.id == vote.id }) {
+                votes.remove(at: index)
+                // Write updated scenarios back to file
+                let updatedData = try JSONEncoder().encode(votes)
+                try updatedData.write(to: savedVotesURL)
+                print("Vote with id \(vote.id) deleted from savedVotes.json.")
+            } else {
+                print("Vote with id \(vote.id) not found in savedVotes.json.")
+            }
+        } catch {
+            print("Failed to delete vote from savedVotes.json: \(error)")
+        }
+    }
+
     
 }
 
@@ -177,3 +335,5 @@ struct MPRowView: View {
         }
     }
 }
+
+

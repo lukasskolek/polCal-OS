@@ -18,12 +18,12 @@ struct LegModelView: View {
         List {
             ForEach(votes) { vote in
                 NavigationLink(value: vote) {
-                        HStack{
-                            Text("\(vote.id)")
-                            if savedVoteIDs.contains(vote.id) {
-                                Image(systemName: "opticaldisc")
-                            }
+                    HStack {
+                        Text("\(vote.id)")
+                        if savedVoteIDs.contains(vote.id) {
+                            Image(systemName: "opticaldisc")
                         }
+                    }
                 }
             }
             .onDelete(perform: deleteVote)
@@ -41,6 +41,15 @@ struct LegModelView: View {
             }
         }
         .onAppear(perform: loadSavedVoteIDs)
+    }
+    init(searchString: String = "", sortOrder: [SortDescriptor<VoteModel>] = []) {
+        _votes = Query(filter: #Predicate { vote in
+            if searchString.isEmpty {
+                return true
+            } else {
+                return vote.id.localizedStandardContains(searchString)
+            }
+        }, sort: sortOrder)
     }
     
     func addVote(){

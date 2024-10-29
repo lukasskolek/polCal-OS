@@ -93,6 +93,87 @@ func saveScenario(_ scenarioModel: ScenarioModel) throws {
     }
 }
 
+func saveVote(_ voteModel: VoteModel) throws {
+    let fileManager = FileManager.default
+    
+    // Check if the scenario's id starts with "New custom scenario"
+    if voteModel.id.starts(with: "New custom vote") {
+        // Raise an error and do not save the scenario
+        throw NSError(domain: "SaveVoteErrorDomain", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot save a vote with the default name. Please rename the vote before saving."])
+    }
+
+    // Get the URL for the Documents directory
+    guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        print("Could not access the documents directory.")
+        return
+    }
+
+    // Create the URL for savedVolby.json in the Documents directory
+    let savedVotesURL = documentsURL.appendingPathComponent("savedVotes.json")
+
+    var votes = [Vote]()
+
+    // Check if savedVolby.json exists
+    if fileManager.fileExists(atPath: savedVotesURL.path) {
+        do {
+            // Read existing data
+            let data = try Data(contentsOf: savedVotesURL)
+            // Decode existing scenarios
+            votes = try JSONDecoder().decode([Vote].self, from: data)
+        } catch {
+            print("Failed to load and parse savedVotes.json: \(error)")
+            // If we can't read existing data, start with an empty array
+            votes = []
+        }
+    } else {
+        // If the file doesn't exist, start with an empty array
+        votes = []
+    }
+
+    // Convert the ScenarioModel to Scenario
+    let newVote = voteModelToVote(voteModel)
+
+    if let index = votes.firstIndex(where: { $0.id == newVote.id }) {
+        // Scenario with the same id exists
+        do {
+            let existingVote = votes[index]
+
+            // Compare the existing scenario with the new one
+            if existingVote != newVote {
+                // Scenarios are not equal, replace it
+                votes[index] = newVote
+
+                // Encode the updated array
+                let data = try JSONEncoder().encode(votes)
+
+                // Write data to savedVolby.json
+                try data.write(to: savedVotesURL)
+                print("Vote with id \(newVote.id) updated in savedVotes.json.")
+            } else {
+                // Scenarios are equal, do nothing
+                print("Vote with id \(newVote.id) already exists and is identical.")
+            }
+        } catch {
+            print("Failed to compare or save votes: \(error)")
+        }
+    } else {
+        // Scenario does not exist, append it
+        votes.append(newVote)
+
+        do {
+            // Encode the updated array
+            let data = try JSONEncoder().encode(votes)
+
+            // Write data to savedVolby.json
+            try data.write(to: savedVotesURL)
+            print("Vote with id \(newVote.id) added to savedVotes.json.")
+        } catch {
+            print("Failed to save votes to savedVotes.json: \(error)")
+        }
+    }
+}
+
+
 // Helper function to convert ScenarioModel to Scenario
 func scenarioModelToScenario(_ model: ScenarioModel) -> Scenario {
     // Map the parties from ScenarioModel to Party structs
@@ -120,4 +201,28 @@ func scenarioModelToScenario(_ model: ScenarioModel) -> Scenario {
     )
 
     return scenario
+}
+
+
+func legPartyModelToLegParty(_ model: legPartyModel) -> legParty {
+    return legParty(id: model.id, name: model.name)
+}
+
+func mpModelToMP(_ mpModel: MPModel) -> MP {
+    let legParty = mpModel.legParty != nil ? legPartyModelToLegParty(mpModel.legParty!) : nil
+    return MP(name: mpModel.name, legParty: legParty, vote: mpModel.vote)
+}
+
+// Helper function to convert VoteModel to Vote
+func voteModelToVote(_ model: VoteModel) -> Vote {
+    // Map the MPs from VoteModel to MP structs
+    let mps = model.mps.map { mpModelToMP($0) }
+
+    let vote = Vote(
+        id: model.id,
+        mps: mps,
+        typevote: model.typevote
+    )
+
+    return vote
 }
