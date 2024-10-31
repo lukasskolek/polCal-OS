@@ -46,28 +46,6 @@
 			);
 			target = 80CF9DA42CB3096A00CCFC0B /* polCal-v2 */;
 		};
-		80CF9F4F2CCAC9BC00CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2Tests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Core/Legislative/CurrentMPs.swift,
-				Core/Legislative/LegislativeView.swift,
-				Core/Legislative/LegModel.swift,
-				Core/Legislative/LegModelView.swift,
-				Core/Legislative/VoteReportView.swift,
-			);
-			target = 80CF9DB42CB3096C00CCFC0B /* polCal-v2Tests */;
-		};
-		80CF9F502CCAC9BC00CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2UITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Core/Legislative/CurrentMPs.swift,
-				Core/Legislative/LegislativeView.swift,
-				Core/Legislative/LegModel.swift,
-				Core/Legislative/LegModelView.swift,
-				Core/Legislative/VoteReportView.swift,
-			);
-			target = 80CF9DBE2CB3096C00CCFC0B /* polCal-v2UITests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,8 +53,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				80CF9E2D2CB311D500CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2" target */,
-				80CF9F4F2CCAC9BC00CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2Tests" target */,
-				80CF9F502CCAC9BC00CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2UITests" target */,
 			);
 			path = "polCal-v2";
 			sourceTree = "<group>";
