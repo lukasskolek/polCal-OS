@@ -146,6 +146,7 @@ struct EditPartyView: View {
                         }
                         .padding(.top, 2)
                         .padding(.horizontal)
+                        
                         HStack {
                             Text("    Mandates:  \(party.mandaty)")
                             Image(systemName: "person.fill")

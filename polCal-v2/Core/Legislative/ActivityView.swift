@@ -2,61 +2,30 @@ import SwiftUI
 
 struct ActivityView: View {
     
-    var vote: VoteModel
-
+    @State var vote: VoteModel
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         VStack(spacing: 20) {
-            // ID & Type Section
-            VStack(alignment: .leading, spacing: 5) {
-                Text("ID & Type")
-                    .font(.headline)
-                Text("ID: \(vote.id)")
-                Text("Type: \(vote.typevote.rawValue.capitalized)")
-            }
-            .padding()
-            
-            // Result Section
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Result")
-                    .font(.headline)
-                HStack {
-                    if vote.didPass() {
-                        Text("PASSED")
-                            .fontWeight(.bold)
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.green)
-                    } else {
-                        Text("DID NOT PASS")
-                            .fontWeight(.bold)
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.red)
-                    }
-                }
-                HStack {
-                    Text("Required to pass: \(votesNeeded())")
-                    Spacer()
-                    Text("For votes: \(forVotes())")
-                        .fontWeight(.bold)
-                }
-                HStack {
-                    Text("Present: \(presentVotes())")
-                    Spacer()
-                    Text("Against votes: \(againstVotes())")
-                        .fontWeight(.semibold)
-                }
-            }
-            .padding()
+            Text("FML why is this so shitty.")
+                .foregroundStyle(.black)
             
             // Voting Summary Section
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: 10) {
                 Text("Voting Summary")
                     .font(.headline)
+                    .foregroundColor(.primary)
+                    .padding(.bottom, 5)
+                
                 VotingSummaryView(vote: vote)
+                    .padding(.top, 5)
             }
             .padding()
+            .background(Color(.white))
+            .cornerRadius(10)
+            
         }
-        .padding()
-        .background(Color(.systemBackground))
+        .background(Color(.white))
     }
     
     // Helper functions
@@ -70,38 +39,16 @@ struct ActivityView: View {
             return 90
         }
     }
-
+    
     func againstVotes() -> Int {
         return vote.mps.filter { $0.vote == .against }.count
     }
-
+    
     func presentVotes() -> Int {
         return vote.mps.filter { $0.vote != .notPresent }.count
     }
-
+    
     func forVotes() -> Int {
         return vote.mps.filter { $0.vote == .forVote }.count
-    }
-
-    func votingSummaryView() -> some View {
-        // Group MPs by their legParty
-        let parties = Dictionary(grouping: vote.mps) { $0.legParty }
-        // Sort parties by ID
-        let sortedParties = parties.keys.compactMap { $0 }.sorted(by: { $0.id < $1.id })
-
-        return VStack(alignment: .leading, spacing: 5) {
-            ForEach(sortedParties, id: \.id) { legParty in
-                let partyName = legParty.name
-                let mps = parties[legParty] ?? []
-                HStack {
-                    Text(partyName)
-                        .font(.subheadline)
-                    Spacer()
-                    Text("\(mps.filter { $0.vote == .forVote }.count) / \(mps.count)")
-                        .font(.subheadline)
-                }
-                .padding(.vertical, 2)
-            }
-        }
     }
 }

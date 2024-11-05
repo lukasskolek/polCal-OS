@@ -89,7 +89,7 @@ class legPartyModel: ObservableObject {
 }
 
 @Model
-final class VoteModel: Identifiable{
+final class VoteModel: ObservableObject, Identifiable{
     var id: String
     
     @Relationship(deleteRule: .cascade)
