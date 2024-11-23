@@ -1,7 +1,7 @@
 import SwiftUI
 import Charts
 
-struct BarChartView: View {
+struct SVKBarChartView: View {
     @Bindable var scenarioModel: ScenarioModel  // Bindable ScenarioModel for dynamic updates
     @State private var selectedParty: PartyModel?
     @State private var selectedName: String?
@@ -148,7 +148,7 @@ struct BarChartView: View {
     }
 }
 
-struct BarChartView_Previews: PreviewProvider {
+struct SVKBarChartView_Previews: PreviewProvider {
     static var previews: some View {
         // Mock PartyModel data with more parties
         let mockParties = [
@@ -213,7 +213,7 @@ struct BarChartView_Previews: PreviewProvider {
         // Calculate mandates if necessary
         mockScenarioModel.calculateMandates()
         
-        return BarChartView(scenarioModel: mockScenarioModel)
+        return SVKBarChartView(scenarioModel: mockScenarioModel)
             .frame(width: 400)
             .previewDisplayName("Votes & Mandates Bar Chart with Multiple Parties")
     }

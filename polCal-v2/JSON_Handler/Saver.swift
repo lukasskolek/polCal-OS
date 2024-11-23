@@ -93,7 +93,7 @@ func saveScenario(_ scenarioModel: ScenarioModel) throws {
     }
 }
 
-func saveVote(_ voteModel: VoteModel) throws {
+func saveVote(_ voteModel: SVKVoteModel) throws {
     let fileManager = FileManager.default
     
     // Check if the scenario's id starts with "New custom scenario"
@@ -111,7 +111,7 @@ func saveVote(_ voteModel: VoteModel) throws {
     // Create the URL for savedVolby.json in the Documents directory
     let savedVotesURL = documentsURL.appendingPathComponent("savedVotes.json")
 
-    var votes = [Vote]()
+    var votes = [SVKVote]()
 
     // Check if savedVolby.json exists
     if fileManager.fileExists(atPath: savedVotesURL.path) {
@@ -119,7 +119,7 @@ func saveVote(_ voteModel: VoteModel) throws {
             // Read existing data
             let data = try Data(contentsOf: savedVotesURL)
             // Decode existing scenarios
-            votes = try JSONDecoder().decode([Vote].self, from: data)
+            votes = try JSONDecoder().decode([SVKVote].self, from: data)
         } catch {
             print("Failed to load and parse savedVotes.json: \(error)")
             // If we can't read existing data, start with an empty array
@@ -204,21 +204,21 @@ func scenarioModelToScenario(_ model: ScenarioModel) -> Scenario {
 }
 
 
-func legPartyModelToLegParty(_ model: legPartyModel) -> legParty {
-    return legParty(id: model.id, name: model.name)
+func legPartyModelToLegParty(_ model: SVKlegPartyModel) -> SVKlegParty {
+    return SVKlegParty(id: model.id, name: model.name)
 }
 
-func mpModelToMP(_ mpModel: MPModel) -> MP {
+func mpModelToMP(_ mpModel: SVKMPModel) -> SVKMP {
     let legParty = mpModel.legParty != nil ? legPartyModelToLegParty(mpModel.legParty!) : nil
-    return MP(name: mpModel.name, legParty: legParty, vote: mpModel.vote)
+    return SVKMP(name: mpModel.name, legParty: legParty, vote: mpModel.vote)
 }
 
 // Helper function to convert VoteModel to Vote
-func voteModelToVote(_ model: VoteModel) -> Vote {
+func voteModelToVote(_ model: SVKVoteModel) -> SVKVote {
     // Map the MPs from VoteModel to MP structs
     let mps = model.mps.map { mpModelToMP($0) }
 
-    let vote = Vote(
+    let vote = SVKVote(
         id: model.id,
         mps: mps,
         typevote: model.typevote

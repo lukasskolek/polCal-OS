@@ -8,9 +8,9 @@
 import SwiftUI
 import SwiftData
 
-struct LegModelView: View {
+struct SVKLegModelView: View {
     @Environment(\.modelContext) var modelContext
-    @Query var votes: [VoteModel]
+    @Query var votes: [SVKVoteModel]
     
     @State private var savedVoteIDs: Set<String> = []
     
@@ -42,7 +42,7 @@ struct LegModelView: View {
         }
         .onAppear(perform: loadSavedVoteIDs)
     }
-    init(searchString: String = "", sortOrder: [SortDescriptor<VoteModel>] = []) {
+    init(searchString: String = "", sortOrder: [SortDescriptor<SVKVoteModel>] = []) {
         _votes = Query(filter: #Predicate { vote in
             if searchString.isEmpty {
                 return true
@@ -54,7 +54,7 @@ struct LegModelView: View {
     
     func addVote(){
         do {
-            let existingVotes = try modelContext.fetch(VoteModel.fetchRequest())
+            let existingVotes = try modelContext.fetch(SVKVoteModel.fetchRequest())
             
             // Find the highest number used in "New custom scenario X"
             let newIDNumber = (existingVotes.compactMap { vote -> Int? in
@@ -69,10 +69,10 @@ struct LegModelView: View {
             let newID = "New custom vote \(newIDNumber)"
             
             // Create the new scenario with default values and the generated ID
-            let vote = VoteModel(
+            let vote = SVKVoteModel(
                 id: newID,
-                mps: currentMPs,
-                typevote: TypeVote.standard
+                mps: SVKcurrentMPs,
+                typevote: SVKTypeVote.standard
             )
             
             // Insert the new scenario into the model context
@@ -102,7 +102,7 @@ struct LegModelView: View {
         }
         do {
             let data = try Data(contentsOf: savedVoteURL)
-            let votes = try JSONDecoder().decode([Vote].self, from: data)
+            let votes = try JSONDecoder().decode([SVKVote].self, from: data)
             let ids = votes.map { $0.id }
             savedVoteIDs = Set(ids)
         } catch {
@@ -114,5 +114,5 @@ struct LegModelView: View {
 }
 
 #Preview {
-    LegModelView()
+    SVKLegModelView()
 }

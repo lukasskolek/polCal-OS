@@ -34,7 +34,7 @@ func loadUserScenarios() -> [Scenario]? {
     }
 }
 
-func loadUserVotes() -> [Vote]? {
+func loadUserVotes() -> [SVKVote]? {
     let fileManager = FileManager.default
 
     // Get the URL for the Documents directory
@@ -57,7 +57,7 @@ func loadUserVotes() -> [Vote]? {
         let data = try Data(contentsOf: savedVotesURL)
 
         // Decode the JSON data into an array of Scenario structs
-        let decodedVotes = try JSONDecoder().decode([Vote].self, from: data)
+        let decodedVotes = try JSONDecoder().decode([SVKVote].self, from: data)
 
         return decodedVotes
     } catch {

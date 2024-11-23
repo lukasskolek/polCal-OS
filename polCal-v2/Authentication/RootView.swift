@@ -24,14 +24,14 @@ struct RootView: View {
 
     var body: some View {
             TabView(selection: $selectedTab) {
-                ElectionsView(selectedTab: $selectedTab, path:$path)
+                SVKElectionsView(selectedTab: $selectedTab, path:$path)
                     .tabItem {
                         Image(systemName: "chart.pie.fill")
                         Text("Scenarios")
                     }
                     .tag(0)
                 
-                LegislativeView(selectedTab: $selectedTab, path:$path)
+                SVKLegislativeView(selectedTab: $selectedTab, path:$path)
                     .tabItem {
                         Image(systemName: "theatermasks.circle")
                         Text("Voting")

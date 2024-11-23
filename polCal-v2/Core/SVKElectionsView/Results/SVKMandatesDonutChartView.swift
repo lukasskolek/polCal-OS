@@ -1,7 +1,7 @@
 import SwiftUI
 import Charts
 
-struct MandateDonutChartView: View {
+struct SVKMandateDonutChartView: View {
     @Bindable var scenarioModel: ScenarioModel  // Bindable ScenarioModel for dynamic updates
     @State private var selectedCount: Int?
     @State private var selectedParty: PartyModel?

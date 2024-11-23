@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 // Define the voting choices as a Codable enum for persistence
-enum VotingChoice: String, Codable, CaseIterable, Identifiable {
+enum SVKVotingChoice: String, Codable, CaseIterable, Identifiable {
     case forVote = "For"
     case against = "Against"
     case didNotVote = "Did Not Vote"
@@ -19,7 +19,7 @@ enum VotingChoice: String, Codable, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-enum PartyVotingChoice: String, Codable, CaseIterable, Identifiable {
+enum SVKPartyVotingChoice: String, Codable, CaseIterable, Identifiable {
     
     case mixed = "Mixed"
     case forVote = "For"
@@ -31,7 +31,7 @@ enum PartyVotingChoice: String, Codable, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-enum TypeVote: String, Codable, CaseIterable, Identifiable {
+enum SVKTypeVote: String, Codable, CaseIterable, Identifiable {
     
     case standard = "standard"
     case veto = "veto"
@@ -40,30 +40,30 @@ enum TypeVote: String, Codable, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
-struct Vote: Codable, Equatable {
+struct SVKVote: Codable, Equatable {
     var id: String
-    var mps: [MP]
-    var typevote: TypeVote
+    var mps: [SVKMP]
+    var typevote: SVKTypeVote
 }
 
-struct MP: Codable, Equatable {
+struct SVKMP: Codable, Equatable {
     var name: String
-    var legParty: legParty?
-    var vote: VotingChoice
+    var legParty: SVKlegParty?
+    var vote: SVKVotingChoice
 }
 
-struct legParty: Codable, Equatable {
+struct SVKlegParty: Codable, Equatable {
     var id: Int
     var name: String
 }
 
 @Model
-class MPModel: ObservableObject, Identifiable {
+class SVKMPModel: ObservableObject, Identifiable {
     var name: String
-    var legParty: legPartyModel?
-    var vote: VotingChoice
+    var legParty: SVKlegPartyModel?
+    var vote: SVKVotingChoice
 
-    init(name: String, legParty: legPartyModel? = nil) {
+    init(name: String, legParty: SVKlegPartyModel? = nil) {
         self.name = name
         self.legParty = legParty
         self.vote = .notPresent // Default state
@@ -72,12 +72,12 @@ class MPModel: ObservableObject, Identifiable {
 }
 
 @Model
-class legPartyModel: ObservableObject {
+class SVKlegPartyModel: ObservableObject {
     var id: Int
     var name: String
-    var members: [MPModel]
+    var members: [SVKMPModel]
 
-    init(id:Int, name: String, members: [MPModel] = []) {
+    init(id:Int, name: String, members: [SVKMPModel] = []) {
         self.id = id
         self.name = name
         self.members = members
@@ -89,28 +89,28 @@ class legPartyModel: ObservableObject {
 }
 
 @Model
-final class VoteModel: ObservableObject, Identifiable{
+final class SVKVoteModel: ObservableObject, Identifiable{
     var id: String
     
     @Relationship(deleteRule: .cascade)
-    var mps: [MPModel]
-    var typevote: TypeVote
+    var mps: [SVKMPModel]
+    var typevote: SVKTypeVote
 
-    init(id: String, mps: [MPModel], typevote: TypeVote) {
+    init(id: String, mps: [SVKMPModel], typevote: SVKTypeVote) {
         self.id = id
         self.mps = mps
         self.typevote = typevote
     }
 
     // Update the voting choice for a specific MP
-    func setVote(for mp: MPModel, choice: VotingChoice) {
+    func setVote(for mp: SVKMPModel, choice: SVKVotingChoice) {
         if let index = mps.firstIndex(where: { $0.name == mp.name }) {
             mps[index].vote = choice
         }
     }
 
     // Update the voting choice for all MPs in a party
-    func setVote(for legParty: legPartyModel, choice: VotingChoice) {
+    func setVote(for legParty: SVKlegPartyModel, choice: SVKVotingChoice) {
         for mp in mps where mp.legParty?.name == legParty.name {
             mp.vote = choice
         }
@@ -137,8 +137,8 @@ final class VoteModel: ObservableObject, Identifiable{
     }
 }
 
-extension VoteModel {
-    static func fetchRequest() -> FetchDescriptor<VoteModel> {
-        FetchDescriptor<VoteModel>()
+extension SVKVoteModel {
+    static func fetchRequest() -> FetchDescriptor<SVKVoteModel> {
+        FetchDescriptor<SVKVoteModel>()
     }
 }

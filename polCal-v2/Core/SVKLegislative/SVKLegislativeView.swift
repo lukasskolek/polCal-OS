@@ -8,16 +8,16 @@
 import SwiftUI
 import SwiftData
 
-struct LegislativeView: View {
+struct SVKLegislativeView: View {
     
     @Environment(\.modelContext) var modelContext
     
     @Binding var selectedTab: Int
-    @State private var sortOrder: [SortDescriptor<VoteModel>] = [SortDescriptor(\VoteModel.id)]
+    @State private var sortOrder: [SortDescriptor<SVKVoteModel>] = [SortDescriptor(\SVKVoteModel.id)]
     @Binding var path: NavigationPath
     
     
-    @State private var userVotes: [Vote] = []
+    @State private var userVotes: [SVKVote] = []
     
    // var parliaments = ["2020","2023", "current"]
     @State var selectedParlSetup: String = "current"
@@ -25,7 +25,7 @@ struct LegislativeView: View {
     
     var body: some View {
         NavigationStack {
-            LegModelView(sortOrder: sortOrder)
+            SVKLegModelView(sortOrder: sortOrder)
                 .onAppear {
                     loadUserVotesList()
                 }
@@ -59,16 +59,16 @@ struct LegislativeView: View {
                         
                     }
                 }
-                .navigationDestination(for: VoteModel.self) { vote in
+                .navigationDestination(for: SVKVoteModel.self) { vote in
                     VoteReportView(path: $path, vote: vote)
                 }
         }
     }
     
-    func loadUserVoteModel(_ vote: Vote) {
+    func loadUserVoteModel(_ vote: SVKVote) {
         do {
             // Check if scenario with the same id already exists in the model context
-            let existingVotes = try modelContext.fetch(VoteModel.fetchRequest())
+            let existingVotes = try modelContext.fetch(SVKVoteModel.fetchRequest())
             if existingVotes.contains(where: { $0.id == vote.id }) {
                 // Scenario is already in model context
                 print("Scenario with id \(vote.id) already exists in model context.")
@@ -87,7 +87,7 @@ struct LegislativeView: View {
     
     func addVote() {
         do {
-            let existingVotes = try modelContext.fetch(VoteModel.fetchRequest())
+            let existingVotes = try modelContext.fetch(SVKVoteModel.fetchRequest())
             
             // Find the highest number used in "New custom vote X"
             let newIDNumber = (existingVotes.compactMap { vote -> Int? in
@@ -102,19 +102,19 @@ struct LegislativeView: View {
             let newID = "New custom vote \(newIDNumber)"
             
             // Create new instances of MPs for the new vote
-            let newMPs = currentMPs.map { oldMP -> MPModel in
+            let newMPs = SVKcurrentMPs.map { oldMP -> SVKMPModel in
                 // Create a new MP instance with the same properties
-                let newMP = MPModel(name: oldMP.name)
+                let newMP = SVKMPModel(name: oldMP.name)
                 newMP.legParty = oldMP.legParty
                 // Set other properties if needed
                 return newMP
             }
             
             // Create the new vote with the new MP instances
-            let vote = VoteModel(
+            let vote = SVKVoteModel(
                 id: newID,
                 mps: newMPs,
-                typevote: TypeVote.standard
+                typevote: SVKTypeVote.standard
             )
             
             // Insert the new vote into the model context
@@ -133,17 +133,17 @@ struct LegislativeView: View {
         }
     }
     
-    func voteToVoteModel(_ vote: Vote) -> VoteModel {
+    func voteToVoteModel(_ vote: SVKVote) -> SVKVoteModel {
         // Create a mapping from legParty IDs to legPartyModel instances to avoid duplicates
-        var legPartyModelsById = [Int: legPartyModel]()
+        var legPartyModelsById = [Int: SVKlegPartyModel]()
         
         // Create an array to hold MPModel instances
-        var mpModels = [MPModel]()
+        var mpModels = [SVKMPModel]()
         
         // Iterate over each MP in the vote
         for mp in vote.mps {
             // Initialize legPartyModelInstance as nil
-            var legPartyModelInstance: legPartyModel? = nil
+            var legPartyModelInstance: SVKlegPartyModel? = nil
             
             // Check if the MP has a legParty
             if let legParty = mp.legParty {
@@ -153,14 +153,14 @@ struct LegislativeView: View {
                     legPartyModelInstance = existingLegPartyModel
                 } else {
                     // Create a new legPartyModel
-                    let newLegPartyModel = legPartyModel(id: legParty.id, name: legParty.name)
+                    let newLegPartyModel = SVKlegPartyModel(id: legParty.id, name: legParty.name)
                     legPartyModelsById[legParty.id] = newLegPartyModel
                     legPartyModelInstance = newLegPartyModel
                 }
             }
             
             // Create a new MPModel
-            let mpModel = MPModel(name: mp.name, legParty: legPartyModelInstance)
+            let mpModel = SVKMPModel(name: mp.name, legParty: legPartyModelInstance)
             mpModel.vote = mp.vote  // Set the MP's vote
             
             // Append the MPModel to the array
@@ -168,7 +168,7 @@ struct LegislativeView: View {
         }
         
         // Create a new VoteModel with the converted MPs
-        let voteModel = VoteModel(id: vote.id, mps: mpModels, typevote: vote.typevote)
+        let voteModel = SVKVoteModel(id: vote.id, mps: mpModels, typevote: vote.typevote)
         
         return voteModel
     }
@@ -198,7 +198,7 @@ struct LegislativeView: View {
     
     func deleteAllVotes() {
         do {
-            let allVotes = try modelContext.fetch(VoteModel.fetchRequest())
+            let allVotes = try modelContext.fetch(SVKVoteModel.fetchRequest())
             for vote in allVotes {
                 modelContext.delete(vote)
             }
@@ -207,11 +207,3 @@ struct LegislativeView: View {
         }
     }
 }
-
-//#Preview {
-//    NavigationStack{
-//        LegislativeView(selectedTab: .constant(1))
-//    }
-//}
-
-

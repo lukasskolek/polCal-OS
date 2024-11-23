@@ -1,18 +1,18 @@
 import SwiftUI
 
-struct ResultsView: View {
+struct SVKResultsView: View {
     @Bindable var scenarioModel: ScenarioModel  // Bindable ScenarioModel for dynamic updates
     
     var body: some View {
         TabView {
             // First tab with BarChartView
-            BarChartView(scenarioModel: scenarioModel)
+            SVKBarChartView(scenarioModel: scenarioModel)
                 .tabItem {
                     Label("Votes", systemImage: "chart.bar")
                 }
             
             // Second tab with MandateDonutChartView
-            MandateDonutChartView(scenarioModel: scenarioModel)
+            SVKMandateDonutChartView(scenarioModel: scenarioModel)
                 .tabItem {
                     Label("Mandates", systemImage: "chart.pie")
                 }
@@ -35,7 +35,7 @@ struct ResultsView: View {
     }
 }
 
-struct ResultsView_Previews: PreviewProvider {
+struct SVKResultsView_Previews: PreviewProvider {
     static var previews: some View {
         // Mock PartyModel data
         let mockParties = [
@@ -88,6 +88,6 @@ struct ResultsView_Previews: PreviewProvider {
         // Calculate mandates
         mockScenarioModel.calculateMandates()
         
-        return ResultsView(scenarioModel: mockScenarioModel)
+        return SVKResultsView(scenarioModel: mockScenarioModel)
     }
 }

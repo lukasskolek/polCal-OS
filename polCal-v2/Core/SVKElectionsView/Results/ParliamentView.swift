@@ -1,10 +1,7 @@
 import SwiftUI
 
-struct Dot: Identifiable {
-    let id = UUID()
-    let index: Int
-    var color: Color
-}
+
+//This is just an attempt at how this could work, it's not polished yet.
 
 struct ParliamentView: View {
     @Bindable var scenarioModel: ScenarioModel  // Bindable ScenarioModel for dynamic updates
@@ -93,6 +90,12 @@ struct ParliamentView: View {
         
         return (centerX, centerY)
     }
+}
+
+struct Dot: Identifiable {
+    let id = UUID()
+    let index: Int
+    var color: Color
 }
 
 struct ParliamentView_Previews: PreviewProvider {

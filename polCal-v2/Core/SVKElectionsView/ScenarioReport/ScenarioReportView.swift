@@ -52,7 +52,7 @@ struct ScenarioReportView: View {
 
                 if hasResults {
                     Section("Results") {
-                        ResultsView(scenarioModel: scenarioModel)
+                        SVKResultsView(scenarioModel: scenarioModel)
                             .frame(minHeight: 500, alignment: .center)
                     }
                 }

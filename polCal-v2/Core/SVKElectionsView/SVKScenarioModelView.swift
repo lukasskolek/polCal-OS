@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-struct ScenarioModelView: View {
+struct SVKScenarioModelView: View {
     @Environment(\.modelContext) var modelContext
     @Query var scenarios: [ScenarioModel]
     

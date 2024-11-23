@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct ElectionsView: View {
+struct SVKElectionsView: View {
     @Environment(\.modelContext) var modelContext
     @State private var sortOrder: [SortDescriptor<ScenarioModel>] = [SortDescriptor(\ScenarioModel.id)]
     @Binding var selectedTab: Int
@@ -11,13 +11,23 @@ struct ElectionsView: View {
     
     var body: some View {
         NavigationStack {
-            ScenarioModelView(sortOrder: sortOrder)
+            SVKScenarioModelView(sortOrder: sortOrder)
                 .onAppear {
                     loadUserScenariosList()
                 }
                 .navigationTitle("Browse scenarios")
                 .toolbar {
                     if selectedTab == 0 {
+                        Menu {
+                            Button(action: {}) {
+                                Text("🇸🇰 Slovakia")
+                            }
+                            Button(action: {}) {
+                                Text("🇨🇿 Czechia")
+                            }
+                        } label: {
+                            Label("Countries", systemImage: "globe.europe.africa")
+                        }
                         Menu {
                             Picker("Sort by", selection: $sortOrder) {
                                 Text("Turnout Total (Low to High)")
