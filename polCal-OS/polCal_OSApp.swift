@@ -10,7 +10,7 @@ import Firebase
 import SwiftData
 
 @main
-struct polCal_v2App: App {
+struct polCal_OSApp: App {
     // register app delegate for Firebase setup
        @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
        

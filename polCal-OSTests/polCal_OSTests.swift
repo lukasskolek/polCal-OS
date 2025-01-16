@@ -6,9 +6,9 @@
 //
 
 import Testing
-@testable import polCal_v2
+@testable import polCal_OS
 
-struct polCal_v2Tests {
+struct polCal_OSTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.

@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class polCal_v2UITestsLaunchTests: XCTestCase {
+final class polCal_OSUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

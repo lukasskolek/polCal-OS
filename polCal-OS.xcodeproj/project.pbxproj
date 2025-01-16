@@ -56,14 +56,14 @@
 			path = "polCal-OS";
 			sourceTree = "<group>";
 		};
-		80CF9DB82CB3096C00CCFC0B /* polCal-v2Tests */ = {
+		80CF9DB82CB3096C00CCFC0B /* polCal-OSTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "polCal-v2Tests";
+			path = "polCal-OSTests";
 			sourceTree = "<group>";
 		};
-		80CF9DC22CB3096C00CCFC0B /* polCal-v2UITests */ = {
+		80CF9DC22CB3096C00CCFC0B /* polCal-OSUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "polCal-v2UITests";
+			path = "polCal-OSUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -102,8 +102,8 @@
 			children = (
 				80CF9F402CC812C400CCFC0B /* MainConfig.xcconfig */,
 				80CF9DA72CB3096A00CCFC0B /* polCal-OS */,
-				80CF9DB82CB3096C00CCFC0B /* polCal-v2Tests */,
-				80CF9DC22CB3096C00CCFC0B /* polCal-v2UITests */,
+				80CF9DB82CB3096C00CCFC0B /* polCal-OSTests */,
+				80CF9DC22CB3096C00CCFC0B /* polCal-OSUITests */,
 				80CF9DA62CB3096A00CCFC0B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -161,7 +161,7 @@
 				80CF9DB72CB3096C00CCFC0B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				80CF9DB82CB3096C00CCFC0B /* polCal-v2Tests */,
+				80CF9DB82CB3096C00CCFC0B /* polCal-OSTests */,
 			);
 			name = "polCal-OSTests";
 			packageProductDependencies = (
@@ -184,7 +184,7 @@
 				80CF9DC12CB3096C00CCFC0B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				80CF9DC22CB3096C00CCFC0B /* polCal-v2UITests */,
+				80CF9DC22CB3096C00CCFC0B /* polCal-OSUITests */,
 			);
 			name = "polCal-OSUITests";
 			packageProductDependencies = (
