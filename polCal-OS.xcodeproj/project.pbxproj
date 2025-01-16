@@ -31,29 +31,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		80CF9DA52CB3096A00CCFC0B /* polCal-v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "polCal-v2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80CF9DB52CB3096C00CCFC0B /* polCal-v2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "polCal-v2Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80CF9DBF2CB3096C00CCFC0B /* polCal-v2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "polCal-v2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80CF9DA52CB3096A00CCFC0B /* polCal-OS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "polCal-OS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80CF9DB52CB3096C00CCFC0B /* polCal-OSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "polCal-OSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80CF9DBF2CB3096C00CCFC0B /* polCal-OSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "polCal-OSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80CF9F402CC812C400CCFC0B /* MainConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MainConfig.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		80CF9E2D2CB311D500CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2" target */ = {
+		80CF9E2D2CB311D500CCFC0B /* Exceptions for "polCal-OS" folder in "polCal-OS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 80CF9DA42CB3096A00CCFC0B /* polCal-v2 */;
+			target = 80CF9DA42CB3096A00CCFC0B /* polCal-OS */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		80CF9DA72CB3096A00CCFC0B /* polCal-v2 */ = {
+		80CF9DA72CB3096A00CCFC0B /* polCal-OS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				80CF9E2D2CB311D500CCFC0B /* Exceptions for "polCal-v2" folder in "polCal-v2" target */,
+				80CF9E2D2CB311D500CCFC0B /* Exceptions for "polCal-OS" folder in "polCal-OS" target */,
 			);
-			path = "polCal-v2";
+			path = "polCal-OS";
 			sourceTree = "<group>";
 		};
 		80CF9DB82CB3096C00CCFC0B /* polCal-v2Tests */ = {
@@ -101,7 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				80CF9F402CC812C400CCFC0B /* MainConfig.xcconfig */,
-				80CF9DA72CB3096A00CCFC0B /* polCal-v2 */,
+				80CF9DA72CB3096A00CCFC0B /* polCal-OS */,
 				80CF9DB82CB3096C00CCFC0B /* polCal-v2Tests */,
 				80CF9DC22CB3096C00CCFC0B /* polCal-v2UITests */,
 				80CF9DA62CB3096A00CCFC0B /* Products */,
@@ -111,9 +111,9 @@
 		80CF9DA62CB3096A00CCFC0B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				80CF9DA52CB3096A00CCFC0B /* polCal-v2.app */,
-				80CF9DB52CB3096C00CCFC0B /* polCal-v2Tests.xctest */,
-				80CF9DBF2CB3096C00CCFC0B /* polCal-v2UITests.xctest */,
+				80CF9DA52CB3096A00CCFC0B /* polCal-OS.app */,
+				80CF9DB52CB3096C00CCFC0B /* polCal-OSTests.xctest */,
+				80CF9DBF2CB3096C00CCFC0B /* polCal-OSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,9 +121,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		80CF9DA42CB3096A00CCFC0B /* polCal-v2 */ = {
+		80CF9DA42CB3096A00CCFC0B /* polCal-OS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80CF9DC92CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-v2" */;
+			buildConfigurationList = 80CF9DC92CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-OS" */;
 			buildPhases = (
 				80CF9DA12CB3096A00CCFC0B /* Sources */,
 				80CF9DA22CB3096A00CCFC0B /* Frameworks */,
@@ -134,9 +134,9 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				80CF9DA72CB3096A00CCFC0B /* polCal-v2 */,
+				80CF9DA72CB3096A00CCFC0B /* polCal-OS */,
 			);
-			name = "polCal-v2";
+			name = "polCal-OS";
 			packageProductDependencies = (
 				80CF9E212CB30C9D00CCFC0B /* FirebaseAnalytics */,
 				80CF9E232CB30C9D00CCFC0B /* FirebaseAuth */,
@@ -144,12 +144,12 @@
 				80CF9E282CB30CBB00CCFC0B /* GoogleSignInSwift */,
 			);
 			productName = "polCal-v2";
-			productReference = 80CF9DA52CB3096A00CCFC0B /* polCal-v2.app */;
+			productReference = 80CF9DA52CB3096A00CCFC0B /* polCal-OS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		80CF9DB42CB3096C00CCFC0B /* polCal-v2Tests */ = {
+		80CF9DB42CB3096C00CCFC0B /* polCal-OSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80CF9DCC2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-v2Tests" */;
+			buildConfigurationList = 80CF9DCC2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-OSTests" */;
 			buildPhases = (
 				80CF9DB12CB3096C00CCFC0B /* Sources */,
 				80CF9DB22CB3096C00CCFC0B /* Frameworks */,
@@ -163,16 +163,16 @@
 			fileSystemSynchronizedGroups = (
 				80CF9DB82CB3096C00CCFC0B /* polCal-v2Tests */,
 			);
-			name = "polCal-v2Tests";
+			name = "polCal-OSTests";
 			packageProductDependencies = (
 			);
 			productName = "polCal-v2Tests";
-			productReference = 80CF9DB52CB3096C00CCFC0B /* polCal-v2Tests.xctest */;
+			productReference = 80CF9DB52CB3096C00CCFC0B /* polCal-OSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		80CF9DBE2CB3096C00CCFC0B /* polCal-v2UITests */ = {
+		80CF9DBE2CB3096C00CCFC0B /* polCal-OSUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80CF9DCF2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-v2UITests" */;
+			buildConfigurationList = 80CF9DCF2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-OSUITests" */;
 			buildPhases = (
 				80CF9DBB2CB3096C00CCFC0B /* Sources */,
 				80CF9DBC2CB3096C00CCFC0B /* Frameworks */,
@@ -186,11 +186,11 @@
 			fileSystemSynchronizedGroups = (
 				80CF9DC22CB3096C00CCFC0B /* polCal-v2UITests */,
 			);
-			name = "polCal-v2UITests";
+			name = "polCal-OSUITests";
 			packageProductDependencies = (
 			);
 			productName = "polCal-v2UITests";
-			productReference = 80CF9DBF2CB3096C00CCFC0B /* polCal-v2UITests.xctest */;
+			productReference = 80CF9DBF2CB3096C00CCFC0B /* polCal-OSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -216,7 +216,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 80CF9DA02CB3096A00CCFC0B /* Build configuration list for PBXProject "polCal-v2" */;
+			buildConfigurationList = 80CF9DA02CB3096A00CCFC0B /* Build configuration list for PBXProject "polCal-OS" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -234,9 +234,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80CF9DA42CB3096A00CCFC0B /* polCal-v2 */,
-				80CF9DB42CB3096C00CCFC0B /* polCal-v2Tests */,
-				80CF9DBE2CB3096C00CCFC0B /* polCal-v2UITests */,
+				80CF9DA42CB3096A00CCFC0B /* polCal-OS */,
+				80CF9DB42CB3096C00CCFC0B /* polCal-OSTests */,
+				80CF9DBE2CB3096C00CCFC0B /* polCal-OSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -292,12 +292,12 @@
 /* Begin PBXTargetDependency section */
 		80CF9DB72CB3096C00CCFC0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80CF9DA42CB3096A00CCFC0B /* polCal-v2 */;
+			target = 80CF9DA42CB3096A00CCFC0B /* polCal-OS */;
 			targetProxy = 80CF9DB62CB3096C00CCFC0B /* PBXContainerItemProxy */;
 		};
 		80CF9DC12CB3096C00CCFC0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80CF9DA42CB3096A00CCFC0B /* polCal-v2 */;
+			target = 80CF9DA42CB3096A00CCFC0B /* polCal-OS */;
 			targetProxy = 80CF9DC02CB3096C00CCFC0B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -506,7 +506,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/polCal-v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/polCal-v2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/polCal-OS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/polCal-OS";
 			};
 			name = Debug;
 		};
@@ -526,7 +526,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/polCal-v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/polCal-v2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/polCal-OS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/polCal-OS";
 			};
 			name = Release;
 		};
@@ -569,7 +569,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		80CF9DA02CB3096A00CCFC0B /* Build configuration list for PBXProject "polCal-v2" */ = {
+		80CF9DA02CB3096A00CCFC0B /* Build configuration list for PBXProject "polCal-OS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80CF9DC72CB3096C00CCFC0B /* Debug */,
@@ -578,7 +578,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80CF9DC92CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-v2" */ = {
+		80CF9DC92CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-OS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80CF9DCA2CB3096C00CCFC0B /* Debug */,
@@ -587,7 +587,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80CF9DCC2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-v2Tests" */ = {
+		80CF9DCC2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-OSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80CF9DCD2CB3096C00CCFC0B /* Debug */,
@@ -596,7 +596,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80CF9DCF2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-v2UITests" */ = {
+		80CF9DCF2CB3096C00CCFC0B /* Build configuration list for PBXNativeTarget "polCal-OSUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80CF9DD02CB3096C00CCFC0B /* Debug */,
