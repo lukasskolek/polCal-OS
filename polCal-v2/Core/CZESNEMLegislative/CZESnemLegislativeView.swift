@@ -1,14 +1,13 @@
 //
-//  LegislativeView.swift
+//  CZESnemLegislativeView.swift
 //  polCal-v2
 //
-//  Created by Lukas on 24/10/2024.
+//  Created by Lukas on 13/01/2025.
 //
 
 import SwiftUI
-import SwiftData
 
-struct SVKLegislativeView: View {
+struct CZESnemLegislativeView: View {
     
     @Environment(\.modelContext) var modelContext
     
@@ -16,7 +15,6 @@ struct SVKLegislativeView: View {
     @State private var sortOrder: [SortDescriptor<SVKVoteModel>] = [SortDescriptor(\SVKVoteModel.id)]
     @Binding var path: NavigationPath
     @Binding var legislativeViewType: LegislativeViewType
-    
     
     @State private var userVotes: [SVKVote] = []
     
@@ -26,11 +24,11 @@ struct SVKLegislativeView: View {
     
     var body: some View {
         NavigationStack {
-            SVKLegModelView(sortOrder: sortOrder)
+            CZESnemLegModelView(sortOrder: sortOrder)
                 .onAppear {
                     loadUserVotesList()
                 }
-                .navigationTitle("Browse SVK votes")
+                .navigationTitle("Browse CZE votes")
                 .toolbar {
                     if selectedTab == 1 {
                         Menu {
