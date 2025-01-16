@@ -432,11 +432,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"polCal-v2/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"polCal-OS/Preview Content\"";
 				DEVELOPMENT_TEAM = GN2P2X6S4D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "polCal-v2/Info.plist";
+				INFOPLIST_FILE = "polCal-OS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PolCal;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -465,11 +465,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"polCal-v2/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"polCal-OS/Preview Content\"";
 				DEVELOPMENT_TEAM = GN2P2X6S4D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "polCal-v2/Info.plist";
+				INFOPLIST_FILE = "polCal-OS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PolCal;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
