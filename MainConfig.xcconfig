@@ -9,6 +9,6 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 
-BUILD_NUMBER = 2
+BUILD_NUMBER = 3
 
 APP_VERSION = 1.1
