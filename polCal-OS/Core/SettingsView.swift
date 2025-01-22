@@ -214,7 +214,7 @@ struct AboutMeSheetView: View {
             }
 
 
-            Text("\n\nHi, my name is Lukas Skolek and I'm from Bratislava, Slovakia 🇸🇰.\n\nI wrote this app in Swift, which is now my favourite programming language. I am still a beginner despite the fact that I've been trying to code on and off for a few years now. I never got any formal education in programming and 9 - 5 I'm usually at my work as a project manager in infrastructure. Before Swift, I tried some Python and R, which were interesting, because I wanted to do data science. However, it was hard for me to develop some fun bigger pastime project using those languages. \n\nIf you want to reach out, find me at:")
+            Text("\n\nHi, my name is Lukas, I'm from Bratislava, Slovakia 🇸🇰.\n\nI wrote this app in Swift, which is now my favourite programming language. I am still a beginner despite the fact that I've been trying to code on and off for a few years now. I never got any formal education in programming and 9 - 5 I'm usually at my work as a project manager in infrastructure. Before Swift, I tried some Python and R, which were interesting, because I wanted to do data science. However, it was hard for me to develop some fun bigger pastime project using those languages. \n\nIf you want to reach out, find me at:")
                 .font(.body)
                 .padding(.horizontal)
             HStack{
